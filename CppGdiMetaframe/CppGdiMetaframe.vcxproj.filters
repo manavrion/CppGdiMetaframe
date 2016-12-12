@@ -96,6 +96,9 @@
     <ClInclude Include="Table.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="String.h">
+      <Filter>MetaFrame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -145,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="Table.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="String.cpp">
+      <Filter>MetaFrame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

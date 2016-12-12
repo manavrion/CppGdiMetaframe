@@ -1,31 +1,9 @@
 #pragma once
 #include "stdafx.h"
+#include "String.h"
 namespace MetaFrame {
 
     //typedef Gdiplus::Color Color;//todo rewrite
-
-    //standart types
-    typedef unsigned char byte;
-    typedef wchar_t wchar;
-
-    class String : public std::wstring {
-    public:
-        String();
-        String(const wchar *a);
-        String(const std::wstring a);
-        String(long long ll);
-        operator const wchar*() const;
-
-        friend String operator+(const String &s1, const String &s2);
-        friend String operator+(const String &s1, const wchar *a);
-        friend String operator+(const wchar *a, const String &s1);
-
-        int toInt() {
-            return _wtoi(this->c_str());
-        }
-    };
-
-    typedef std::string ByteString;
 
 
     template<typename T1, typename T2>

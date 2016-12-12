@@ -68,7 +68,7 @@ namespace MetaFrame {
 
 
         virtual GraphArea *eraseNode(GraphNode* node) {
-            names.erase(node->getLabel().toInt());
+            names.erase(node->getLabel().toValueInt());
             
             for (auto it = childs.begin(); it != childs.end(); it++) {
                 if (*it == node) {
