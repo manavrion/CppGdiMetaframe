@@ -119,8 +119,8 @@ namespace MetaFrame {
 
         inline void drawLine(PointF a, PointF b, const Color &color, float width) {
             //no protect
-            a.shiftTo(totalShifts);
-            b.shiftTo(totalShifts);
+            a += totalShifts;
+            b += totalShifts;
 
             std::vector<PointF> pts;
 
@@ -171,8 +171,8 @@ namespace MetaFrame {
 
         inline void drawLineSP(PointF a, PointF b, const Color &color, float width) {
             //no protect
-            a.shiftTo(totalShifts);
-            b.shiftTo(totalShifts);
+            a += totalShifts;
+            b += totalShifts;
 
             Rect tmp = permitedRegion;
             permitedRegion.inflate(-2, -2);

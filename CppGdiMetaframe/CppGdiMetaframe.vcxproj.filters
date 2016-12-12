@@ -155,9 +155,6 @@
     <ClCompile Include="String.cpp">
       <Filter>MetaFrame</Filter>
     </ClCompile>
-    <ClCompile Include="Point.cpp">
-      <Filter>MetaFrame</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CppGdiMetaframe.rc">

@@ -14,6 +14,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
 
+    //Gdiplus::Point a = Point(1, 1);
+
+    //Gdiplus::Point b = point<float>(1, 1);
+
 
     Window *mainWindow = new Window(L"ManaevRuslanGraph", L"Manaev Ruslan Graph", Size(800, 400), Color(60, 60, 60), hInstance);
     GraphArea *graphArea = new GraphArea();
