@@ -13,6 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="MetaFrame">
+      <UniqueIdentifier>{4d6b18c4-2efd-4c96-8cf1-c2a268914fa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaFrameCpp">
+      <UniqueIdentifier>{207eebca-85c5-426c-aa66-486576391d73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaFrameHeaders">
+      <UniqueIdentifier>{ff7d6f1d-35f0-456b-bba8-485b6849b18f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaFramePlatform">
+      <UniqueIdentifier>{58ad10f1-5213-4849-915f-9a20ef9524c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaFrameElements">
+      <UniqueIdentifier>{55012dbb-be2b-49e3-b0eb-2e3a8a157ab6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -27,7 +42,58 @@
     <ClInclude Include="Resource.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="CppGdiMetaframe.h">
+    <ClInclude Include="Main.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="MetaFrame.h">
+      <Filter>MetaFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>MetaFrameHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="InputCodes.h">
+      <Filter>MetaFrameHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="MetaTypes.h">
+      <Filter>MetaFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEvent.h">
+      <Filter>MetaFrameHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemWindow.h">
+      <Filter>MetaFramePlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>MetaFramePlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>MetaFrameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameElement.h">
+      <Filter>MetaFrameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="ThemeManager.h">
+      <Filter>MetaFrameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>MetaFrameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>MetaFrameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>MetaFrameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Round.h">
+      <Filter>MetaFrameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphArea.h">
+      <Filter>MetaFrameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Table.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,7 +101,49 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="CppGdiMetaframe.cpp">
+    <ClCompile Include="Main.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="MetaTypes.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemWindow.cpp">
+      <Filter>MetaFramePlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>MetaFramePlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameElement.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ThemeManager.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphArea.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Round.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>MetaFrameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Table.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
