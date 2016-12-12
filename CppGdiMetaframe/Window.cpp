@@ -70,7 +70,7 @@ namespace MetaFrame {
 
         oldSize = size;
         graphics->fillBackground(Color(60, 60, 60));
-        invalidateRect(size.toRect());
+        invalidateRect((Rect)size);
         
     }
 
