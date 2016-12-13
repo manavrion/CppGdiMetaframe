@@ -41,6 +41,9 @@ registerMouseWheelMovedEvent
     public:
         FrameElement();
 
+
+        
+
     protected:
         //location in parent
         int x;
@@ -50,6 +53,10 @@ registerMouseWheelMovedEvent
         int height;
         bool autoWidth;
         bool autoHeight;
+
+        Gdiplus::Image *bufmap;
+
+
 
         int minWidth;
         int maxWidth;

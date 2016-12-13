@@ -38,6 +38,17 @@ namespace MetaFrame {
         }
 
 
+        void refrash() {
+            n = table.size();
+            m = table[0].size();
+            build();
+            for (int i = 0; i < table.size(); i++) {
+                for (int j = 0; j < table[i].size(); j++) {
+                    setCell(table[i][j], i, j);
+                }
+            }
+        }
+
     protected:
         int n;
         int m;

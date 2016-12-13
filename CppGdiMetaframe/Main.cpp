@@ -3,7 +3,12 @@
 
 #include "stdafx.h"
 #include "Main.h"
+#include "Dfs.h"
+DWORD WINAPI threaddfs(LPVOID t);
 
+GraphArea *graphArea = new GraphArea();
+Label *stateLine;
+Window *mainWindow;
 using namespace MetaFrame;
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, 
                       _In_opt_ HINSTANCE hPrevInstance,
@@ -19,10 +24,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     //Gdiplus::Point b = point<float>(1, 1);
 
 
-    Window *mainWindow = new Window(L"ManaevRuslanGraph", L"Manaev Ruslan Graph", Size(800, 400), Color(60, 60, 60), hInstance);
-    GraphArea *graphArea = new GraphArea();
+    mainWindow = new Window(L"ManaevRuslanGraph", L"Manaev Ruslan Graph", Size(800, 400), Color(60, 60, 60), hInstance);
     
-    Label *stateLine = (Label*)(new Label())
+    
+    stateLine = (Label*)(new Label())
         ->setText(L"На поле 0 вершин.")
         ->setHorizontalAlignment(HorizontalAlignment::Left)
         ->setVerticalAlignment(VerticalAlignment::Center)
@@ -34,9 +39,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     bool innodedragMode = false;
     GraphLine *line = null;
 
+    Table *table = new Table();
+
+
     mainWindow->add(graphArea
         ->setBackgroundColor(Color(100, 100, 100))
-        ->setMargin(Margin(10, 200, 10, 150))
+        ->setMargin(Margin(10, 200, 10, 250))
         ->addMouseDoubleClickedEvent([&](MouseEvent event, FrameElement *sender) {
             if (event.shiftDown) return;
             for (auto &node : graphArea->getNodesCollection()) {
@@ -58,10 +66,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                         graphArea->eraseNode((GraphNode *)sender);
                     }
                     stateLine->setText(L"На поле " + String(graphArea->getNodesCollection().size()) + L" вершин.");
+                    table->getTable() = graphArea->getAdjacencyMatrix();
+                    table->refrash();
                     mainWindow->update();
                 })
             );
             stateLine->setText(L"На поле " + String(graphArea->getNodesCollection().size()) + L" вершин.");
+
+
+            table->getTable() = graphArea->getAdjacencyMatrix();
+            table->refrash();
+
+
             mainWindow->update();
         })
         ->addMouseReleasedEvent([&](MouseEvent event, FrameElement *sender) { 
@@ -73,7 +89,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             }
             for (auto &node : graphArea->getNodesCollection()) {
                 if (node->getRect().contains((Point)line->getPointOfEnd())) {
+                    if (node->getRect().contains((Point)line->getPointOfBegin())) {
+                        continue;
+                    }
                     line->setPointOfEnd(PointF(node->getX() + node->getWidth() / 2, node->getY() + node->getHeight() / 2));
+                    graphArea->addLineComplite(line);
+                    table->getTable() = graphArea->getAdjacencyMatrix();
+                    table->refrash();
                     mainWindow->pack();
                     mainWindow->update();
                     return;
@@ -94,7 +116,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
             if (innodedragMode) {
                 line->setPointOfEnd(PointF(event.x, event.y));
-                graphArea->addLineComplite(line);
+                //graphArea->addLineComplite(line);
                 /*Rect r = line->getRect();
                 r.inflate(Point(30, 30));
                 sender->invalidateRect(r);*/
@@ -182,6 +204,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
             graphArea->clear();
             stateLine->setText(L"На поле " + String(graphArea->getNodesCollection().size()) + L" вершин.");
+            table->getTable() = graphArea->getAdjacencyMatrix();
+            table->refrash();
             mainWindow->pack();
             mainWindow->update();
         })
@@ -192,23 +216,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         ->setMargin(Margin(10, 200, 10, 40))
         ->setVerticalAlignment(VerticalAlignment::Bottom)
         ->setAutoHeight(false)
-        ->setHeight(100)
+        ->setHeight(200)
         ->add((new Label())
               ->setText(L"Матрица смежности:")
               ->setMargin(0, 0, 0, 0)
         )
-        ->add((new Table())
+        ->add(table
               ->setColomnsNumber(3)
               ->setStringsNumber(3)
-              ->setCell(L"00", 0, 0)
-              ->setCell(L"01", 0, 1)
-              ->setCell(L"02", 0, 2)
-              ->setCell(L"10", 1, 0)
-              ->setCell(L"11", 1, 1)
-              ->setCell(L"12", 1, 2)
-              ->setCell(L"20", 2, 0)
-              ->setCell(L"21", 2, 1)
-              ->setCell(L"22", 2, 2)
               ->setMargin(1, 1, 20, 1)
         )
     );
@@ -245,24 +260,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ->setHeight(40)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
-        graphArea->clear();
-        mainWindow->pack();
-        mainWindow->update();
-    })
+
+                        HANDLE thread = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);
+                        mainWindow->update();
+                    })
     );
-
-
-
-
-
-
-
-    
 
     mainWindow->pack();
     mainWindow->run();
     
     delete mainWindow;
 
+    return 0;
+}
+
+DWORD WINAPI threaddfs(LPVOID t) {
+    DfsClass d(graphArea->getGraph(), mainWindow);
+    d.dfs(graphArea->getSelect());
+    stateLine->setText(L"Поиск в глубину выполнен!");
+    mainWindow->update();
     return 0;
 }

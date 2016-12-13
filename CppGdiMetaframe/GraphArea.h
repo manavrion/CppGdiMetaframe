@@ -68,7 +68,7 @@ namespace MetaFrame {
 
 
         virtual GraphArea *eraseNode(GraphNode* node) {
-            names.erase(node->getLabel().toValueInt());
+            names.erase(node->getLabel());
             
             for (auto it = childs.begin(); it != childs.end(); it++) {
                 if (*it == node) {
@@ -135,6 +135,51 @@ namespace MetaFrame {
         };
 
     public:
+
+        std::map<GraphNode*, std::map<GraphNode*, std::set<GraphLine*>>> &getGraph() {
+            return graph;
+        };
+
+
+        GraphNode* getSelect() {
+            
+            for (auto &ob : nodes) {
+                if (ob->getLabel() == L"a") {
+                    return ob;
+                }
+            }
+            return null;
+        }
+
+
+        std::vector<std::vector<String>> getAdjacencyMatrix() {
+            std::vector<std::vector<String>> matrix(nodes.size() + 1, std::vector<String>(nodes.size() + 1));
+
+            for (auto &vec : matrix) {
+                vec.resize(nodes.size() + 1);
+            }
+
+            int i = 1;
+            for (auto &node : nodes) {
+                matrix[0][i] = node->getLabel();
+                matrix[i][0] = node->getLabel();
+
+                int j = 1;
+                for (auto &annode : nodes) {
+                    if (graph[node][annode].size() >= 1) {
+                        matrix[i][j] = graph[node][annode].size();
+                        matrix[j][i] = graph[node][annode].size();
+                    } else {
+                        matrix[i][j] =graph[node][annode].size();
+                        matrix[j][i] =graph[node][annode].size();
+                    }
+                    j++;
+                }
+                i++;
+            }
+            return matrix;
+        }
+
 
         void clear() {
             childs.clear();

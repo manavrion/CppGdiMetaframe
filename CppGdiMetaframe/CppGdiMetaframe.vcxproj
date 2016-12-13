@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Dfs.h" />
     <ClInclude Include="FrameElement.h" />
     <ClInclude Include="GraphArea.h" />
     <ClInclude Include="Graphics.h" />

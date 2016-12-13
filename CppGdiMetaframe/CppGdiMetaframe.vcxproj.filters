@@ -108,6 +108,9 @@
     <ClInclude Include="Rect.h">
       <Filter>MetaFrame</Filter>
     </ClInclude>
+    <ClInclude Include="Dfs.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

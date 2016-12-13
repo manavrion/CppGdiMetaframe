@@ -68,7 +68,7 @@ namespace MetaFrame {
 
         virtual void repaintRect(Graphics *graphics) {
             ///graphics->drawRectangle(Rect(0, 0, width, height), color);
-            graphics->drawLineSP(PointF(lineWidth, lineWidth), PointF(width - lineWidth, height - lineWidth), color, lineWidth);
+            graphics->drawLineSP(PointF(0, 0), PointF(width, height), color, lineWidth);
         };
 
 

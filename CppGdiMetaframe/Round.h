@@ -21,12 +21,28 @@ namespace MetaFrame {
             return label->getText();
         };
 
+        
+        void setDefColor() {
+            
+        }
+
+        void setColor(Color color = Color(120, 120, 120)) {
+            this->color = color;
+        }
+
+        Color getColor() {
+            return color;
+        }
+
+    private:
+        Color color = Color(120, 120, 120);
         virtual void repaintRect(Graphics *graphics) {
             graphics->fillEllipse(Rect(0, 0, width, height), Color(0, 0, 0));
             
-            graphics->fillEllipse(Rect(1, 1, width - 2, height - 2), this->getBackgroundColor());
+            graphics->fillEllipse(Rect(1, 1, width - 2, height - 2), color);
         };
 
+    public:
         ~GraphNode() {
             delete label;
         };

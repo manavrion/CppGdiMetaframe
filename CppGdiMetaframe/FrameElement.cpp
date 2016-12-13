@@ -23,7 +23,9 @@ namespace MetaFrame {
         verticalAlignment(VerticalAlignment::Center),
         parent(null), oldMouseEventPos(),
         backgroundColor(120, 120, 120)
-    { }
+    { 
+        //bufmap = Gdiplus::Image();
+    }
 
 
 
