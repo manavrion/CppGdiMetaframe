@@ -11,6 +11,7 @@ class DfsClass {
 public:
     DfsClass(map<GraphNode*, map<GraphNode*, set<GraphLine*>>> graph, Window *mainWindow) : mainWindow(mainWindow){
         this->graph = graph;
+        updateScreen();
     };
     Window *mainWindow;
 
@@ -26,7 +27,6 @@ public:
             if (v.second.size() == 0) {
                 continue;
             }
-            updateScreen(v.first);
             if (color[v.first] == 0)
                 dfs(v.first);
         }
@@ -40,7 +40,7 @@ public:
         Color color = node->getColor();
         node->setColor(Color(0, 255, 255));
         mainWindow->update();
-        Sleep(250);
+        Sleep(400);
         node->setColor(color);
     }
 
@@ -52,7 +52,7 @@ public:
                     ob.first->setColor(Color(0, 0, 0));
                     break;
                 case 1:
-                    ob.first->setColor(Color(160, 0, 0));
+                    ob.first->setColor(Color(160, 160, 0));
                     break;
                 case 2:
                     ob.first->setColor(Color(50, 50, 50));
@@ -62,7 +62,7 @@ public:
             }
             
         }
-        Sleep(250);
+        Sleep(400);
         mainWindow->update();
     }
 

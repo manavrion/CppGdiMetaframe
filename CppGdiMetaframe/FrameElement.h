@@ -58,11 +58,15 @@ registerMouseWheelMovedEvent
                 return;
             }
 
+
             delete bitmap;
-            bitmap = new Gdiplus::Bitmap(width, height, graphicsTmp);
+            
             delete mygraphics_newGraphSys;
+
+
+            bitmap = new Gdiplus::Bitmap(width, height, graphicsTmp);
             mygraphics_newGraphSys = new Gdiplus::Graphics(bitmap);
-            //repaint();
+            repaint();
         }
 
 

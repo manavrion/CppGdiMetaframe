@@ -33,20 +33,6 @@ namespace MetaFrame {
             paintBackBuffer();
         }
 
-        virtual void resizeBitMapEvent_newGraphSys() {
-
-            static Gdiplus::Graphics *graphicsTmp = new Gdiplus::Graphics(hwndhhhg);
-
-            if (width == 0 || height == 0) {
-                return;
-            }
-
-            delete bitmap;
-            bitmap = new Gdiplus::Bitmap(width, height, graphicsTmp);
-            delete mygraphics_newGraphSys;
-            mygraphics_newGraphSys = new Gdiplus::Graphics(bitmap);
-        }
-
     protected:
         //ход вверх
         virtual void repaint() {
@@ -59,7 +45,7 @@ namespace MetaFrame {
         };
 
         virtual void repaintMyRect() {
-
+            mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(this->getBackgroundColor()), Rect(0, 0, width, height));
         };
 
         /*

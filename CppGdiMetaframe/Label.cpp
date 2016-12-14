@@ -60,8 +60,8 @@ namespace MetaFrame {
 
 
     void Label::repaintMyRect() {
-
-
+        mygraphics_newGraphSys->Clear(Color(0,0,0,0));
+        mygraphics_newGraphSys->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintSingleBitPerPixelGridFit);
         mygraphics_newGraphSys->DrawString(text, text.size(), font, PointF(0, 0), &Gdiplus::SolidBrush(color));
 
         //graphics->drawString(text, font, textRenderingHint, color, Rect(0, 0, width, height));

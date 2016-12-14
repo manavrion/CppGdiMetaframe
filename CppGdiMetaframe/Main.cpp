@@ -10,7 +10,6 @@ DWORD WINAPI threaddfs(LPVOID t);
 GraphArea *graphArea = new GraphArea();
 Label *stateLine;
 Window *mainWindow;
-bool brrep = true;
 
 using namespace MetaFrame;
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, 
@@ -252,7 +251,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
         HANDLE threadr = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);
         
-                        mainWindow->update();
+                        //mainWindow->update();
                     })
     );
 
@@ -273,8 +272,8 @@ DWORD WINAPI threaddfs(LPVOID t) {
     DfsClass d(graphArea->getGraph(), mainWindow);
     d.dfs(graphArea->getSelect());
     stateLine->setText(L"Поиск в глубину выполнен!");
-    //mainWindow->updateAsync();
-    brrep = true;
+    Sleep(250);
+    mainWindow->update();
     return 0;
 }
 

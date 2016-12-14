@@ -31,6 +31,7 @@ namespace MetaFrame {
     }
 
     void Button::repaintMyRect() {
+        mygraphics_newGraphSys->Clear(Color(0, 0, 0, 0));
         switch (state) {
             case MetaFrame::ElementState::NORMAL:
                 mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(normal), Rect(0, 0, width, height));

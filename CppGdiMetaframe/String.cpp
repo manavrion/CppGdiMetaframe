@@ -10,7 +10,7 @@ namespace MetaFrame {
     String::String(const std::wstring a) : std::wstring(a) {}
 
     String::String(long long ll) {
-        wchar *buffer = new wchar[32];
+        wchar buffer[32];
         _itow(ll, buffer, 10);
         this->operator=(buffer);
     }

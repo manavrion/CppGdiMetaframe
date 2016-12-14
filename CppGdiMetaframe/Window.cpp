@@ -45,11 +45,18 @@ namespace MetaFrame {
 
         //init HDC and graphics
         HBITMAP backBufferHBitmap;
+
         bitmap->GetHBITMAP(this->backgroundColor, &backBufferHBitmap);
+
         HDC backBufferHDC = CreateCompatibleDC(null);
         SelectObject(backBufferHDC, backBufferHBitmap);
         BitBlt(hdc, 0, 0, width, height, backBufferHDC, 0, 0, SRCCOPY);
 
+
+        DeleteObject(backBufferHBitmap);
+
+        //delete HDC and graphics
+        DeleteDC(backBufferHDC);
 
         EndPaint(hWindow, &ps);
     }
