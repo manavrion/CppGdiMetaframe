@@ -137,6 +137,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bfs.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Dfs.h" />
     <ClInclude Include="FrameElement.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="MetaFrame.h" />
     <ClInclude Include="MetaTypes.h" />
+    <ClInclude Include="OutTable.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Rect.h" />

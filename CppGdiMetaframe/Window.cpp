@@ -7,6 +7,7 @@ namespace MetaFrame {
     Window::Window(String windowClassName, String title, Size size, Color background, HINSTANCE hInstance)
         : SystemWindow(windowClassName, title, size, background, hInstance), FrameElement(), oldSize()
     {
+        setBackgroundColor(background);
         this->setRect(getWindowRect());
         hwndhhhg = hWindow;
         resizeBitMapEvent_newGraphSys();

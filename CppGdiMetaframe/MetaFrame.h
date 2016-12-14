@@ -49,6 +49,7 @@
 #include "Panel.h"
 #include "Round.h"
 #include "Table.h"
+#include "OutTable.h"
 #include "Line.h"
 #include "GraphArea.h"
 #include "ThemeManager.h"

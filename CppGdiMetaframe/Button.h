@@ -11,14 +11,14 @@ namespace MetaFrame {
 
         Button *setLabel(String text);
 
+        ElementState state;
     protected:
 
-        ElementState state;
         Color normal = Color(160, 160, 160);
         Color selected = Color(190, 190, 190);
         Color pressed = Color(120, 120, 120);
         Color focused;
-        Color disabled;
+        Color disabled = Color(160, 160, 160, 60);
 
         Label *label;
 

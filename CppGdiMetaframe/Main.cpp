@@ -4,7 +4,9 @@
 #include "stdafx.h"
 #include "Main.h"
 #include "Dfs.h"
+#include "Bfs.h"
 DWORD WINAPI threaddfs(LPVOID t);
+DWORD WINAPI threadbfs(LPVOID t);
 //DWORD WINAPI rep(LPVOID t);
 
 GraphArea *graphArea = new GraphArea();
@@ -210,8 +212,27 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         ->add(table
               ->setColomnsNumber(3)
               ->setStringsNumber(3)
-              ->setMargin(1, 1, 20, 1)
+              ->setMargin(5, 5, 20, 5)
         )
+    );
+
+    mainWindow->add((new Panel())
+                    ->setBackgroundColor(Color(100, 100, 100))
+                    ->setMargin(Margin(10, 10, 10, 190))
+                    ->setVerticalAlignment(VerticalAlignment::Stretch)
+                    ->setHorizontalAlignment(HorizontalAlignment::Right)
+                    ->setAutoWidth(false)
+                    ->setWidth(180)
+                    ->setAutoHeight(true)
+                    ->add((new Label())
+                          ->setText(L"Вывод:")
+                          ->setMargin(0, 0, 0, 0)
+                    )
+                    /*->add(table
+                          ->setColomnsNumber(3)
+                          ->setStringsNumber(3)
+                          ->setMargin(5, 5, 20, 5)
+                    )*/
     );
 
 
@@ -228,9 +249,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ->setHeight(40)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
-                        graphArea->clear();
-                        mainWindow->pack();
-                        mainWindow->update();
+                        //brrep = false;
+                        stateLine->setText(L"Поиск в ширину запущен...");
+                        //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
+                        HANDLE threadr = CreateThread(NULL, 0, threadbfs, NULL, 0, NULL);
                     })
     );
     
@@ -246,12 +268,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ->setHeight(40)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
-        //brrep = false;
-        stateLine->setText(L"Поиск в глубину запущен...");
-        //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
-        HANDLE threadr = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);
-        
-                        //mainWindow->update();
+                        //brrep = false;
+                        stateLine->setText(L"Поиск в глубину запущен...");
+                        //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
+                        HANDLE threadr = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);
                     })
     );
 
@@ -272,21 +292,17 @@ DWORD WINAPI threaddfs(LPVOID t) {
     DfsClass d(graphArea->getGraph(), mainWindow);
     d.dfs(graphArea->getSelect());
     stateLine->setText(L"Поиск в глубину выполнен!");
-    Sleep(250);
+    Sleep(400);
     mainWindow->update();
     return 0;
 }
 
 
-/*
-DWORD WINAPI rep(LPVOID t) {
-    while (true) {
-        mainWindow->update();
-        if (brrep) {
-
-            break;
-        }
-        Sleep(50);
-    }
+DWORD WINAPI threadbfs(LPVOID t) {
+    BfsClass d(graphArea->getGraph(), mainWindow);
+    d.bfs(graphArea->getSelect());
+    stateLine->setText(L"Поиск в ширину выполнен!");
+    Sleep(400);
+    mainWindow->update();
     return 0;
-}*/
+}

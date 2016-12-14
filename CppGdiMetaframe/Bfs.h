@@ -4,14 +4,14 @@ using namespace MetaFrame;
 using namespace std;
 typedef GraphNode* Node;
 typedef GraphLine* Line;
-//DFS
+//Bfs
 
 
-class DfsClass {
+class BfsClass {
 public:
-    DfsClass(map<GraphNode*, map<GraphNode*, set<GraphLine*>>> graph, Window *mainWindow) : mainWindow(mainWindow){
+    BfsClass(map<GraphNode*, map<GraphNode*, set<GraphLine*>>> graph, Window *mainWindow) : mainWindow(mainWindow) {
         this->graph = graph;
-        for (auto &ob : graph) { color[ob.first] = 0; }
+        for (auto &ob : graph) { used[ob.first] = 0; }
         updateScreen();
     };
     Window *mainWindow;
@@ -19,19 +19,28 @@ public:
 
     map<GraphNode*, map<GraphNode*, set<GraphLine*>>> graph; // граф
 
-    map<Node, int> color; // цвет вершины (0, 1, или 2)
+    map<Node, int> used; // цвет вершины (0, 1, или 2)
 
-    void dfs(Node node) {
+    void bfs(Node node) {
+
+        queue<Node> q;
+        q.push(node);
+        used[node] = 1;
+        while (!q.empty()) {
+            Node v = q.front();
+            used[v] = 2;
+            q.pop();
+            updateScreen();
+            for (auto &u : graph[v]) {
+                if (used[u.first] == 0 && u.second.size() != 0) {
+                    q.push(u.first);
+                    used[u.first] = 1;
+                    updateScreen();
+                }
 
 
-        color[node] = 1;
-        updateScreen();
-        for (auto &v : graph[node]) {
-            if (color[v.first] == 0 && v.second.size() != 0)
-                dfs(v.first);
+            }
         }
-        color[node] = 2;
-        updateScreen();
         return;
     }
 
@@ -46,7 +55,7 @@ public:
 
     void updateScreen() {
 
-        for (auto &ob : color) {
+        for (auto &ob : used) {
             switch (ob.second) {
                 case 0:
                     ob.first->setColor(Color(160, 160, 160));
@@ -60,13 +69,13 @@ public:
                 default:
                     break;
             }
-            
+
         }
         Sleep(400);
         mainWindow->update();
     }
 
-    ~DfsClass() {};
+    ~BfsClass() {};
 
 };
 

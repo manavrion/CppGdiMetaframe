@@ -22,7 +22,7 @@ namespace MetaFrame {
         horizontalAlignment(HorizontalAlignment::Center), 
         verticalAlignment(VerticalAlignment::Center),
         parent(null), oldMouseEventPos(),
-        backgroundColor(255, 120, 120)
+        backgroundColor(60, 60, 60)
     { 
         //resizeBitMapEvent_newGraphSys();
     }
@@ -248,7 +248,15 @@ namespace MetaFrame {
                 case MetaFrame::VerticalAlignment::Absolute:
                     break;
                 case MetaFrame::VerticalAlignment::Top:
-                    break;
+                {
+                    /*if (child->autoHeight) {
+                        child->y = child->margin.top;
+                        child->height = height - child->margin.bottom - child->margin.top;
+                    } else {
+                        int freeSpace = abs(height - child->height);
+                        child->y = freeSpace / 2;
+                    }*/
+                }
                 case MetaFrame::VerticalAlignment::Center:
                 {
                     if (child->autoHeight) {
