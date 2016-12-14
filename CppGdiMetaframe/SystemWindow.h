@@ -28,8 +28,8 @@ namespace MetaFrame {
 
         void setWindowRect(const Rect &rect);
         Rect getWindowRect();
-    private:
         HWND hWindow; //дескриптор экземпляра окна
+    private:
         HINSTANCE hInstance;    // текущий экземпляр
         HACCEL hAccelTable;     // таблица горячих клавиш
 
@@ -38,6 +38,7 @@ namespace MetaFrame {
         virtual void wmPaintBackBufferEvent() = 0;
         virtual void wmSize(Size &size) = 0;
 
+        virtual void wmRepaintAll() = 0;
 
         //input events
         virtual void wmKeyDown(const KeyEvent &event) = 0;

@@ -4,7 +4,7 @@
 
 namespace MetaFrame {
 
-    class GraphArea : public Panel {
+    class GraphArea : public FrameElement {
     public:
 
         GraphArea() {};
@@ -120,6 +120,9 @@ namespace MetaFrame {
             return this;
         }
 
+
+
+
     private:
 
         std::set<String> names;
@@ -130,8 +133,8 @@ namespace MetaFrame {
         std::map<GraphNode*, std::map<GraphNode*, std::set<GraphLine*>>> graph;
         
         virtual void repaintRect(Graphics *graphics) {
-            graphics->fillRectangle(Rect(0, 0, width, height), this->getBackgroundColor());
-            graphics->drawRectangle(Rect(0, 0, width, height), Color(255, 255, 255));
+            //graphics->fillRectangle(Rect(0, 0, width, height), this->getBackgroundColor());
+           // graphics->drawRectangle(Rect(0, 0, width, height), Color(255, 255, 255));
         };
 
     public:

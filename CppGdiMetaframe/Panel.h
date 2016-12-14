@@ -10,7 +10,11 @@ namespace MetaFrame {
 
         virtual void repaintRect(Graphics *graphics) {
             graphics->fillRectangle(Rect(0, 0, width, height), this->getBackgroundColor());
+
             graphics->drawRectangle(Rect(0, 0, width, height), Color(255, 255, 255));
+            //mygraphics->FillRectangle(&Gdiplus::Brush(this->getBackgroundColor()), Rect(0, 0, width, height));
+
+           // mygraphics->DrawRectangle(Rect(0, 0, width, height), Color(255, 255, 255));
         };
 
         ~Panel() {};

@@ -10,6 +10,7 @@ namespace MetaFrame {
         this->setRect(getWindowRect());
     }
 
+    bool block = false;
 
     FrameElement *Window::setRect(Rect rect) {
         x = getWindowRect().x;
@@ -36,6 +37,22 @@ namespace MetaFrame {
 
     void Window::wmPaintBackBufferEvent() {
         graphics->paintBackBuffer(this->getRect()); //this->rect is wrong
+    }
+
+    
+    void Window::wmRepaintAll() {
+        bool block = true;
+        if (System.timeOfBeginingPaint == 0) {
+            System.timeOfBeginingPaint = clock();
+        }
+
+        graphics->clearShifts();
+        this->runRepaintRect(graphics, Point(-x, -y), Rect(x, y, width, height));
+        //invalidateScreenRect();
+        
+
+
+        update();
     }
 
     void Window::wmSize(Size &size) {
@@ -74,10 +91,8 @@ namespace MetaFrame {
         
     }
 
-
-
     void Window::invalidateRect(Rect invalidRect) {
-
+        
         if (System.timeOfBeginingPaint == 0) {
             System.timeOfBeginingPaint = clock();
         }
@@ -92,6 +107,15 @@ namespace MetaFrame {
 
     void Window::update() {
         invalidateRect(Rect(0, 0, width, height));
+    }
+
+    
+
+    void Window::updateAsync() {
+        UpdateWindow(hWindow);
+        //updateAsyncNative();
+        //UpdateWindow(hWindow);
+        //invalidateScreenRect();
     }
 
     void Window::repaintRect(Graphics *graphics) {

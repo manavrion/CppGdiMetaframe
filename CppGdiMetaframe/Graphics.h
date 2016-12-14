@@ -23,8 +23,13 @@ namespace MetaFrame {
 
             fillBackground(color);
 
+
+           // startProc();
             //System.graphics = this;
         }
+
+        bool isupdate = false;
+        bool isbreak = false;
 
     private:
         HWND hWindow;
@@ -37,6 +42,8 @@ namespace MetaFrame {
         HDC backBufferHDC;
         Gdiplus::Graphics *graphics;
         
+        
+
     private:
         Point totalShifts;
         Rect permitedRegion;
@@ -52,6 +59,8 @@ namespace MetaFrame {
 
 
     public:
+        void startProc();
+
         void paintBackBuffer(const Rect &rect);
 
         inline bool resizeBuffer(Size parsize) {
@@ -259,10 +268,10 @@ namespace MetaFrame {
         {
             Gdiplus::RectF boundingBox;
             if (this == nullptr) {
-                Gdiplus::Graphics *graphicsTmp = new Gdiplus::Graphics(GetDC(NULL));
+                static Gdiplus::Graphics *graphicsTmp = new Gdiplus::Graphics(GetDC(NULL));
                 graphicsTmp->SetTextRenderingHint(textRenderingHint);
                 graphicsTmp->MeasureString(text, text.size(), font, Gdiplus::PointF(), &boundingBox);
-                delete graphicsTmp;
+                //delete graphicsTmp;
                 return PointF(boundingBox.Width + 1, boundingBox.Height);
             }
             graphics->SetTextRenderingHint(textRenderingHint);

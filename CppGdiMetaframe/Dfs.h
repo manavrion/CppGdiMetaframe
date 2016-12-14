@@ -39,8 +39,8 @@ public:
     void updateScreen(Node node) {
         Color color = node->getColor();
         node->setColor(Color(0, 255, 255));
-        mainWindow->update();
-        Sleep(250);
+        mainWindow->updateAsync();
+        Sleep(500);
         node->setColor(color);
     }
 
@@ -55,15 +55,15 @@ public:
                     ob.first->setColor(Color(160, 0, 0));
                     break;
                 case 2:
-                    ob.first->setColor(Color(169, 169, 169));
+                    ob.first->setColor(Color(50, 50, 50));
                     break;
                 default:
                     break;
             }
             
         }
-        Sleep(250);
-        mainWindow->update();
+        Sleep(500);
+        mainWindow->updateAsync();
     }
 
     ~DfsClass() {};

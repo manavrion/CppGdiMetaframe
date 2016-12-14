@@ -54,10 +54,6 @@ registerMouseWheelMovedEvent
         bool autoWidth;
         bool autoHeight;
 
-        Gdiplus::Image *bufmap;
-
-
-
         int minWidth;
         int maxWidth;
         int minHeight;

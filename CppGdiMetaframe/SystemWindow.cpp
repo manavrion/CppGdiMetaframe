@@ -15,6 +15,8 @@ namespace MetaFrame {
             case WM_PAINT:
             {
                 if (this == null) return DefWindowProc(eventInfo.hWindow, eventInfo.message, eventInfo.wParam, eventInfo.lParam);
+                wmRepaintAll();
+
                 wmPaintBackBufferEvent();
                 break;
             }

@@ -9,6 +9,25 @@
 
 
 namespace MetaFrame {
+
+    DWORD WINAPI updWindowThreadTT(LPVOID t) {
+
+        Graphics *graphics = (Graphics*)(t);
+
+        while (true) {
+            if (graphics->isupdate) {
+                graphics->paintBackBuffer(Rect());
+            }
+            if (graphics->isbreak) {
+                break;
+            }
+        }
+
+
+        return 0;
+    }
+
+
     void Graphics::paintBackBuffer(const Rect & rect) {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWindow, &ps);
@@ -23,4 +42,8 @@ namespace MetaFrame {
 
         EndPaint(hWindow, &ps);
     }
+    void Graphics::startProc() {
+        HANDLE thread = CreateThread(NULL, 0, updWindowThreadTT, this, 0, NULL);
+    }
+    
 }

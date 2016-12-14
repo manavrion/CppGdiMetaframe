@@ -12,6 +12,10 @@ namespace MetaFrame {
 
         void update();
 
+        void updateAsync();
+
+        bool ggblock = false;
+
     protected:
 
         void invalidateRect(Rect invalidRect);
@@ -22,6 +26,10 @@ namespace MetaFrame {
         Size oldSize;
 
         void wmPaintBackBufferEvent();
+
+    public:
+        void wmRepaintAll();
+
         void wmSize(Size &size);
 
         void wmKeyDown(const KeyEvent &event);

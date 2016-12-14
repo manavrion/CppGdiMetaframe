@@ -23,9 +23,7 @@ namespace MetaFrame {
         verticalAlignment(VerticalAlignment::Center),
         parent(null), oldMouseEventPos(),
         backgroundColor(120, 120, 120)
-    { 
-        //bufmap = Gdiplus::Image();
-    }
+    { }
 
 
 
@@ -298,11 +296,11 @@ namespace MetaFrame {
 
 
     void FrameElement::invalidateRect(Rect rect) {
-        if (System.timeOfBeginingPaint == 0) {
+        /*if (System.timeOfBeginingPaint == 0) {
             System.timeOfBeginingPaint = clock();
         }
         rect.shiftTo(Point(x, y));
-        parent->invalidateRect(Rect(rect, getRect()));
+        parent->invalidateRect(Rect(rect, getRect()));*/
     }
 
 

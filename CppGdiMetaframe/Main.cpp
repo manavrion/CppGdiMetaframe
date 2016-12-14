@@ -5,10 +5,13 @@
 #include "Main.h"
 #include "Dfs.h"
 DWORD WINAPI threaddfs(LPVOID t);
+DWORD WINAPI rep(LPVOID t);
 
 GraphArea *graphArea = new GraphArea();
 Label *stateLine;
 Window *mainWindow;
+bool brrep = true;
+
 using namespace MetaFrame;
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, 
                       _In_opt_ HINSTANCE hPrevInstance,
@@ -260,8 +263,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ->setHeight(40)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
-
-                        HANDLE thread = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);
+        brrep = false;
+        mainWindow->ggblock = true;
+        HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
+        HANDLE threadr = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);
+        
                         mainWindow->update();
                     })
     );
@@ -278,6 +284,20 @@ DWORD WINAPI threaddfs(LPVOID t) {
     DfsClass d(graphArea->getGraph(), mainWindow);
     d.dfs(graphArea->getSelect());
     stateLine->setText(L"Поиск в глубину выполнен!");
-    mainWindow->update();
+    //mainWindow->updateAsync();
+    brrep = true;
+    return 0;
+}
+
+
+DWORD WINAPI rep(LPVOID t) {
+    while (true) {
+        mainWindow->wmRepaintAll();
+        if (brrep) {
+            mainWindow->ggblock = false;
+            break;
+        }
+        Sleep(50);
+    }
     return 0;
 }
