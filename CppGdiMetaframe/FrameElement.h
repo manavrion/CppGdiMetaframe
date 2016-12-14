@@ -42,7 +42,73 @@ registerMouseWheelMovedEvent
         FrameElement();
 
 
-        
+        //////////////////////////////////////////////
+        //render
+        Gdiplus::Bitmap *bitmap = nullptr;
+        HWND hwndhhhg = nullptr;
+
+        virtual void resizeBitMapEvent_newGraphSys() {
+            if (hwndhhhg == null) {
+                return;
+            }
+
+            static Gdiplus::Graphics *graphicsTmp = new Gdiplus::Graphics(hwndhhhg);
+
+            if (width == 0 || height == 0) {
+                return;
+            }
+
+            delete bitmap;
+            bitmap = new Gdiplus::Bitmap(width, height, graphicsTmp);
+            delete mygraphics_newGraphSys;
+            mygraphics_newGraphSys = new Gdiplus::Graphics(bitmap);
+            //repaint();
+        }
+
+
+
+
+        Gdiplus::Graphics *mygraphics_newGraphSys = nullptr;
+
+
+        //ход вниз
+        virtual void paintBackBuffer() {
+            parent->mygraphics_newGraphSys->DrawImage(bitmap, getRect());
+            parent->paintBackBuffer();
+        };
+
+        //запуск обхода
+        virtual void update() {
+            repaint();
+            parent->paintBackBuffer();
+        }
+
+    public:
+        //ход вверх
+        virtual void repaint() {
+            if (width == 0 || height == 0) {
+                return;
+            }
+            if (hwndhhhg == null) {
+                hwndhhhg = parent->hwndhhhg;
+            }
+            if (bitmap == null) {
+                resizeBitMapEvent_newGraphSys();
+            }
+            if (bitmap->GetWidth() != width || bitmap->GetHeight() != height) {
+                resizeBitMapEvent_newGraphSys();
+            }
+            repaintMyRect();
+            for (size_t i = 0; i < childs.size(); i++) {
+                childs[i]->repaint();
+            }
+            
+            parent->mygraphics_newGraphSys->DrawImage(bitmap, getRect());
+        };
+
+        virtual void repaintMyRect() = 0;
+
+        /////////////////////////////////////////////////////////////////////////////////////////
 
     protected:
         //location in parent
@@ -129,15 +195,15 @@ registerMouseWheelMovedEvent
 
         virtual FrameElement *addToBack(FrameElement *child);
 
-        virtual void invalidateRect(Rect rect);
+        //virtual void invalidateRect(Rect rect);
 
         virtual ArrayList<FrameElement*> &getChilds() {
             return childs;
         }
 
-        virtual void update() {
+        /*virtual void update() {
             invalidateRect(Rect(-x, -y, width, height));
-        }
+        }*/
 
         virtual FrameElement *getParent();
 
@@ -198,7 +264,7 @@ registerMouseWheelMovedEvent
         void runMouseWheelMovedEvent(MouseEvent event);
 
         public:
-        virtual void runRepaintRect(Graphics *graphics, Point totalShifts, Rect totalRect);
+        //virtual void runRepaintRect(Graphics *graphics, Point totalShifts, Rect totalRect);
 
         void runSizeChanged(const Rect &oldSize, Rect &newSize);
 
@@ -224,7 +290,7 @@ registerMouseWheelMovedEvent
         
         //special
     public:
-        virtual void repaintRect(Graphics *graphics) = 0;
+        
 
 
         virtual ~FrameElement();

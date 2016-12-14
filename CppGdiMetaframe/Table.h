@@ -70,7 +70,7 @@ namespace MetaFrame {
             return this;
         }
 
-        virtual void repaintRect(Graphics *graphics) {
+        virtual void repaintMyRect(Graphics *graphics) {
             graphics->fillRectangle(Rect(0, 0, width, height), this->getBackgroundColor());
             graphics->drawRectangle(Rect(0, 0, width, height), Color(255, 255, 255));
             graphics->drawLine(PointF(3, 20), PointF(40*n, 20), Color(255, 255, 255), 1);

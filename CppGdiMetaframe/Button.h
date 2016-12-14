@@ -23,7 +23,7 @@ namespace MetaFrame {
         Label *label;
 
 
-        void repaintRect(Graphics *graphics);
+        void repaintMyRect();
 
         //event
         void mouseEntered(const MouseEvent &event, FrameElement *sender);

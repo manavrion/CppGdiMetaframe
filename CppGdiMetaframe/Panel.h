@@ -8,10 +8,10 @@ namespace MetaFrame {
     public:
         Panel() : FrameElement() {};
 
-        virtual void repaintRect(Graphics *graphics) {
-            graphics->fillRectangle(Rect(0, 0, width, height), this->getBackgroundColor());
+        virtual void repaintMyRect() {
+            mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(this->getBackgroundColor()), Rect(0, 0, width, height));
+            mygraphics_newGraphSys->DrawRectangle(&Gdiplus::Pen(Color(255, 255, 255)), Rect(0, 0, width-1, height-1));
 
-            graphics->drawRectangle(Rect(0, 0, width, height), Color(255, 255, 255));
             //mygraphics->FillRectangle(&Gdiplus::Brush(this->getBackgroundColor()), Rect(0, 0, width, height));
 
            // mygraphics->DrawRectangle(Rect(0, 0, width, height), Color(255, 255, 255));

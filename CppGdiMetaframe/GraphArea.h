@@ -132,7 +132,9 @@ namespace MetaFrame {
 
         std::map<GraphNode*, std::map<GraphNode*, std::set<GraphLine*>>> graph;
         
-        virtual void repaintRect(Graphics *graphics) {
+        virtual void repaintMyRect() {
+            mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(this->getBackgroundColor()), Rect(0, 0, width, height));
+            //mygraphics_newGraphSys->DrawRectangle(&Gdiplus::Pen(Color(255, 255, 255)), Rect(0, 0, width, height));
             //graphics->fillRectangle(Rect(0, 0, width, height), this->getBackgroundColor());
            // graphics->drawRectangle(Rect(0, 0, width, height), Color(255, 255, 255));
         };

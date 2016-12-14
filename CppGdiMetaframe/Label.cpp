@@ -59,8 +59,12 @@ namespace MetaFrame {
     Label *Label::setColor(Color val) { color = val; return this; }
 
 
-    void Label::repaintRect(Graphics *graphics) {
-        graphics->drawString(text, font, textRenderingHint, color, Rect(0, 0, width, height));
+    void Label::repaintMyRect() {
+
+
+        mygraphics_newGraphSys->DrawString(text, text.size(), font, PointF(0, 0), &Gdiplus::SolidBrush(color));
+
+        //graphics->drawString(text, font, textRenderingHint, color, Rect(0, 0, width, height));
     }
 
     Label::~Label() {

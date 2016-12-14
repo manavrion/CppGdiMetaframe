@@ -16,24 +16,17 @@ namespace MetaFrame {
 
     public:
 
-        virtual Rect getRect() {
-            Rect rect(x, y, width, height);
-            if (width < 0) {
-                rect.x = x + width;
-                rect.width = std::abs(rect.width);
-            }
-            if (height < 0) {
-                rect.y = y + height;
-                rect.height = std::abs(rect.height);
-            }
-            return rect;
-        }
+
 
         PointF getPointOfBegin() {
-            return PointF(x, y);
+            x = parent->getX();
+            y = parent->getY();
+            width = parent->getWidth();
+            height = parent->getHeight();
+            return a;
         }
         PointF getPointOfEnd() {
-            return PointF(x + width, y + height);
+            return b;
         }
         Color getColor() {
             return color;
@@ -43,13 +36,15 @@ namespace MetaFrame {
         }
 
         GraphLine *setPointOfBegin(PointF pointOfBegin) {
-            x = pointOfBegin.x;
-            y = pointOfBegin.y;
+            x = parent->getX();
+            y = parent->getY();
+            width = parent->getWidth();
+            height = parent->getHeight();
+            a = pointOfBegin;
             return this;
         }
         GraphLine *setPointOfEnd(PointF pointOfEnd) {
-            width = pointOfEnd.x - x;
-            height = pointOfEnd.y - y;
+            b = pointOfEnd;
             return this;
         }
         GraphLine *setColor(Color color) {
@@ -61,14 +56,20 @@ namespace MetaFrame {
             return this;
         }
 
+        PointF a, b;
+
+
     private:
 
         Color color;
         float lineWidth;
 
-        virtual void repaintRect(Graphics *graphics) {
+        virtual void repaintMyRect() {
+            mygraphics_newGraphSys->Clear(Color(0, 0, 0, 0));
             ///graphics->drawRectangle(Rect(0, 0, width, height), color);
-            graphics->drawLineSP(PointF(0, 0), PointF(width, height), color, lineWidth);
+            mygraphics_newGraphSys->SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
+            mygraphics_newGraphSys->DrawLine(&Gdiplus::Pen(color, lineWidth), a, b);
+            //graphics->drawLineSP(PointF(0, 0), PointF(width, height), color, lineWidth);
         };
 
 

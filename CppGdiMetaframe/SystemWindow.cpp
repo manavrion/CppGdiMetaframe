@@ -15,7 +15,7 @@ namespace MetaFrame {
             case WM_PAINT:
             {
                 if (this == null) return DefWindowProc(eventInfo.hWindow, eventInfo.message, eventInfo.wParam, eventInfo.lParam);
-                wmRepaintAll();
+                //wmRepaintAll();
 
                 wmPaintBackBufferEvent();
                 break;
@@ -258,6 +258,7 @@ namespace MetaFrame {
         bool nCmdShow = true;
         windowMapHH[hWindow] = this;
         
+        this->hWindowBind(hWindow);
         ShowWindow(hWindow, nCmdShow);
         UpdateWindow(hWindow);
 

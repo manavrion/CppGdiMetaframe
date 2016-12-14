@@ -8,6 +8,9 @@ namespace MetaFrame {
         : SystemWindow(windowClassName, title, size, background, hInstance), FrameElement(), oldSize()
     {
         this->setRect(getWindowRect());
+        hwndhhhg = hWindow;
+        resizeBitMapEvent_newGraphSys();
+        update();
     }
 
     bool block = false;
@@ -36,9 +39,21 @@ namespace MetaFrame {
     }
 
     void Window::wmPaintBackBufferEvent() {
-        graphics->paintBackBuffer(this->getRect()); //this->rect is wrong
-    }
+        //graphics->paintBackBuffer(this->getRect()); //this->rect is wrong
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hWindow, &ps);
 
+        //init HDC and graphics
+        HBITMAP backBufferHBitmap;
+        bitmap->GetHBITMAP(this->backgroundColor, &backBufferHBitmap);
+        HDC backBufferHDC = CreateCompatibleDC(null);
+        SelectObject(backBufferHDC, backBufferHBitmap);
+        BitBlt(hdc, 0, 0, width, height, backBufferHDC, 0, 0, SRCCOPY);
+
+
+        EndPaint(hWindow, &ps);
+    }
+    /*
     
     void Window::wmRepaintAll() {
         bool block = true;
@@ -53,14 +68,15 @@ namespace MetaFrame {
 
 
         update();
-    }
+    }*/
 
     void Window::wmSize(Size &size) {
         //super magic code, don't touch
         this->width = size.width;
         this->height = size.height;
-        graphics->resizeBuffer(size);
+        //graphics->resizeBuffer(size);
         pack();
+        resizeBitMapEvent_newGraphSys();
         /*if (graphics->resizeBuffer(size)) {
 
             if (oldSize.height >= size.height && oldSize.width < size.width) {
@@ -86,11 +102,13 @@ namespace MetaFrame {
         */
 
         oldSize = size;
-        graphics->fillBackground(Color(60, 60, 60));
-        invalidateRect((Rect)size);
+        //graphics->fillBackground(Color(60, 60, 60));
+        //invalidateRect((Rect)size);
+        update();
         
     }
 
+    /*
     void Window::invalidateRect(Rect invalidRect) {
         
         if (System.timeOfBeginingPaint == 0) {
@@ -118,10 +136,10 @@ namespace MetaFrame {
         //invalidateScreenRect();
     }
 
-    void Window::repaintRect(Graphics *graphics) {
+    void Window::repaintMyRect(Graphics *graphics) {
         graphics->fillRectangle(Rect(0, 0, width, height), Color(60, 60, 60));
         //graphics->fillBackground(Color(60, 60, 60));
-    }
+    }*/
 
 
 

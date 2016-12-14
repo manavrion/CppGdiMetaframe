@@ -30,22 +30,22 @@ namespace MetaFrame {
         return this;
     }
 
-    void Button::repaintRect(Graphics *graphics) {
+    void Button::repaintMyRect() {
         switch (state) {
             case MetaFrame::ElementState::NORMAL:
-                graphics->fillRectangle(Rect(0, 0, width, height), normal);
+                mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(normal), Rect(0, 0, width, height));
                 break;
             case MetaFrame::ElementState::SELECTED:
-                graphics->fillRectangle(Rect(0, 0, width, height), selected);
+                mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(selected), Rect(0, 0, width, height));
                 break;
             case MetaFrame::ElementState::PRESSED:
-                graphics->fillRectangle(Rect(0, 0, width, height), pressed);
+                mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(pressed), Rect(0, 0, width, height));
                 break;
             case MetaFrame::ElementState::FOCUSED:
-                graphics->fillRectangle(Rect(0, 0, width, height), focused);
+                mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(focused), Rect(0, 0, width, height));
                 break;
             case MetaFrame::ElementState::DISABLED:
-                graphics->fillRectangle(Rect(0, 0, width, height), disabled);
+                mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(disabled), Rect(0, 0, width, height));
                 break;
             default:
                 break;
@@ -55,22 +55,26 @@ namespace MetaFrame {
 
     void Button::mouseEntered(const MouseEvent &event, FrameElement *sender) {
         state = ElementState::SELECTED;
-        invalidateRect(Rect(0, 0, width, height));
+        update();
+        //invalidateRect(Rect(0, 0, width, height));
     }
 
     void Button::mouseExited(const MouseEvent &event, FrameElement *sender) {
         state = ElementState::NORMAL;
-        invalidateRect(Rect(0, 0, width, height));
+        update();
+        //invalidateRect(Rect(0, 0, width, height));
     }
 
     void Button::mousePressed(const MouseEvent &event, FrameElement *sender) {
         state = ElementState::PRESSED;
-        invalidateRect(Rect(0, 0, width, height));
+        update();
+        //invalidateRect(Rect(0, 0, width, height));
     }
 
     void Button::mouseReleased(const MouseEvent &event, FrameElement *sender) {
         state = ElementState::SELECTED;
-        invalidateRect(Rect(0, 0, width, height));
+        update();
+        //invalidateRect(Rect(0, 0, width, height));
     }
 
     Button::~Button() {

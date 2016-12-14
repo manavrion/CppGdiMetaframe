@@ -38,8 +38,10 @@ namespace MetaFrame {
         virtual void wmPaintBackBufferEvent() = 0;
         virtual void wmSize(Size &size) = 0;
 
-        virtual void wmRepaintAll() = 0;
+        //virtual void wmRepaintAll() = 0;
 
+        virtual void hWindowBind(HWND hWindow) = 0;
+         
         //input events
         virtual void wmKeyDown(const KeyEvent &event) = 0;
         virtual void wmKeyUp(const KeyEvent &event) = 0;

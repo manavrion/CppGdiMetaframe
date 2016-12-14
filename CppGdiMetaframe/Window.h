@@ -10,17 +10,70 @@ namespace MetaFrame {
         virtual FrameElement *setLocation(Point p);
         virtual FrameElement *setSize(Size p);
 
+
+
+        //////////////////////////////////////////////
+        //render
+        //ход вниз
+        void paintBackBuffer() {
+            //parent->mygraphics_newGraphSys->DrawImage(bitmap, getRect());
+            //parent->paintBackBuffer();
+            invalidateScreenRect();
+        };
+
+        void hWindowBind(HWND hWindow) {
+            hwndhhhg = hWindow;
+            update();
+        }
+
+        //запуск обхода
+        void update() {
+
+            repaint();
+            paintBackBuffer();
+        }
+
+        virtual void resizeBitMapEvent_newGraphSys() {
+
+            static Gdiplus::Graphics *graphicsTmp = new Gdiplus::Graphics(hwndhhhg);
+
+            if (width == 0 || height == 0) {
+                return;
+            }
+
+            delete bitmap;
+            bitmap = new Gdiplus::Bitmap(width, height, graphicsTmp);
+            delete mygraphics_newGraphSys;
+            mygraphics_newGraphSys = new Gdiplus::Graphics(bitmap);
+        }
+
+    protected:
+        //ход вверх
+        virtual void repaint() {
+            repaintMyRect();
+            for (size_t i = 0; i < childs.size(); i++) {
+                childs[i]->repaint();
+            }
+            
+            //parent->mygraphics_newGraphSys->DrawImage(bitmap, getRect());
+        };
+
+        virtual void repaintMyRect() {
+
+        };
+
+        /*
         void update();
 
         void updateAsync();
 
         bool ggblock = false;
-
+        */
     protected:
 
-        void invalidateRect(Rect invalidRect);
+        //void invalidateRect(Rect invalidRect);
 
-        void repaintRect(Graphics *graphics);
+        //void repaintMyRect(Graphics *graphics);
 
     private:
         Size oldSize;
@@ -28,7 +81,7 @@ namespace MetaFrame {
         void wmPaintBackBufferEvent();
 
     public:
-        void wmRepaintAll();
+        //void wmRepaintAll();
 
         void wmSize(Size &size);
 

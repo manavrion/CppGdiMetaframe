@@ -22,8 +22,10 @@ namespace MetaFrame {
         horizontalAlignment(HorizontalAlignment::Center), 
         verticalAlignment(VerticalAlignment::Center),
         parent(null), oldMouseEventPos(),
-        backgroundColor(120, 120, 120)
-    { }
+        backgroundColor(255, 120, 120)
+    { 
+        //resizeBitMapEvent_newGraphSys();
+    }
 
 
 
@@ -48,16 +50,19 @@ namespace MetaFrame {
     FrameElement *FrameElement::setSize(Size size) {
         width = size.width;
         height = size.height;
+        resizeBitMapEvent_newGraphSys();
         return this;
     }
 
     FrameElement *FrameElement::setWidth(int width) {
         this->width = width;
+        resizeBitMapEvent_newGraphSys();
         return this;
     }
 
     FrameElement *FrameElement::setHeight(int height) {
         this->height = height;
+        resizeBitMapEvent_newGraphSys();
         return this;
     }
 
@@ -282,26 +287,30 @@ namespace MetaFrame {
     FrameElement *FrameElement::add(FrameElement *child) {
         childs.push_back(child);
         child->setParent(this);
+        child->hwndhhhg = hwndhhhg;
+        child->resizeBitMapEvent_newGraphSys();
         return this;
     }
 
     FrameElement *FrameElement::addToBack(FrameElement * child) {
         childs.insert(childs.begin(), child);
         child->setParent(this);
+        child->hwndhhhg = hwndhhhg;
+        child->resizeBitMapEvent_newGraphSys();
         return this;
     }
 
 
 
 
-
+    /*
     void FrameElement::invalidateRect(Rect rect) {
-        /*if (System.timeOfBeginingPaint == 0) {
+        if (System.timeOfBeginingPaint == 0) {
             System.timeOfBeginingPaint = clock();
         }
         rect.shiftTo(Point(x, y));
-        parent->invalidateRect(Rect(rect, getRect()));*/
-    }
+        parent->invalidateRect(Rect(rect, getRect()));
+    }*/
 
 
 
@@ -556,7 +565,7 @@ namespace MetaFrame {
         }
     }
 
-    void FrameElement::runRepaintRect(Graphics *graphics, Point totalShifts, Rect totalRect) {
+    /*void FrameElement::runRepaintRect(Graphics *graphics, Point totalShifts, Rect totalRect) {
         
         Rect newTotalRect;
 
@@ -574,14 +583,14 @@ namespace MetaFrame {
 
         totalShifts = totalShifts + Point(x, y);
 
-        this->repaintRect(graphics);
+        this->repaintMyRect(graphics);
 
         for (auto &ob : childs) {
             
             ob->runRepaintRect(graphics, totalShifts, newTotalRect);
         }
 
-    }
+    }*/
 
     void FrameElement::runSizeChanged(const Rect & oldSize, Rect & newSize) {
     }
@@ -597,6 +606,8 @@ namespace MetaFrame {
 
     FrameElement::~FrameElement() {
         childs.clear();
+        delete bitmap;
+        delete mygraphics_newGraphSys;
     }
 
     

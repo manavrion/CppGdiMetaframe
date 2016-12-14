@@ -5,7 +5,7 @@
 #include "Main.h"
 #include "Dfs.h"
 DWORD WINAPI threaddfs(LPVOID t);
-DWORD WINAPI rep(LPVOID t);
+//DWORD WINAPI rep(LPVOID t);
 
 GraphArea *graphArea = new GraphArea();
 Label *stateLine;
@@ -20,15 +20,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
+    // Initialize GDI+.
+    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+    ULONG_PTR           gdiplusToken;
+    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
 
-    //Gdiplus::Point a = Point(1, 1);
-
-    //Gdiplus::Point b = point<float>(1, 1);
-
-
-    mainWindow = new Window(L"ManaevRuslanGraph", L"Manaev Ruslan Graph", Size(800, 400), Color(60, 60, 60), hInstance);
     
+    mainWindow = new Window(L"ManaevRuslanGraph", L"Manaev Ruslan Graph", Size(800, 400), Color(60, 60, 60), hInstance);
+
     
     stateLine = (Label*)(new Label())
         ->setText(L"На поле 0 вершин.")
@@ -37,14 +37,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         ->setMargin(10, 0, 0, 0);
 
     Point prepos = Point();
-
+    
 
     bool innodedragMode = false;
     GraphLine *line = null;
 
     Table *table = new Table();
 
-
+    
     mainWindow->add(graphArea
         ->setBackgroundColor(Color(100, 100, 100))
         ->setMargin(Margin(10, 200, 10, 250))
@@ -91,11 +91,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 return;
             }
             for (auto &node : graphArea->getNodesCollection()) {
-                if (node->getRect().contains((Point)line->getPointOfEnd())) {
-                    if (node->getRect().contains((Point)line->getPointOfBegin())) {
+                if (node->getRect().contains( Point(line->getPointOfEnd()) + Point(sender->getX(), sender->getY()))) {
+                    if (node->getRect().contains(Point(line->getPointOfBegin()) + Point(sender->getX(), sender->getY()))) {
                         continue;
                     }
-                    line->setPointOfEnd(PointF(node->getX() + node->getWidth() / 2, node->getY() + node->getHeight() / 2));
+                    line->setPointOfEnd(PointF(node->getX() + node->getWidth() / 2 - sender->getX(), node->getY() + node->getHeight() / 2 - sender->getY()));
                     graphArea->addLineComplite(line);
                     table->getTable() = graphArea->getAdjacencyMatrix();
                     table->refrash();
@@ -118,13 +118,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         ->addMouseDraggedEvent([&](MouseEvent event, FrameElement *sender) {
 
             if (innodedragMode) {
-                line->setPointOfEnd(PointF(event.x, event.y));
+                line->setPointOfEnd(PointF(event.x - sender->getX(), event.y - sender->getY()));
                 //graphArea->addLineComplite(line);
-                /*Rect r = line->getRect();
-                r.inflate(Point(30, 30));
-                sender->invalidateRect(r);*/
+                
                 //mainWindow->update();
-                sender->invalidateRect(Rect(1, 1, sender->getWidth() - 3, sender->getHeight() - 3));
+                //sender->invalidateRect(Rect(1, 1, sender->getWidth() - 3, sender->getHeight() - 3));
+                sender->update();
                 return;
             }
 
@@ -138,15 +137,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     line = new GraphLine();
                     graphArea->addLine(line
                         ->setColor(Color(255, 255, 255))
-                        ->setPointOfBegin(PointF(node->getX() + node->getWidth() / 2, node->getY() + node->getHeight() / 2))
-                        ->setPointOfEnd(PointF(event.x, event.y))
                         ->setLineWidth(4)
                     );
-                    /*Rect r = line->getRect();
-                    r.inflate(Point(30, 30));
-                    sender->invalidateRect(r);*/
-                    //mainWindow->update();
-                    sender->invalidateRect(Rect(1, 1, sender->getWidth() - 3, sender->getHeight() - 3));
+                    line->setPointOfBegin(PointF(node->getX() + node->getWidth() / 2 - sender->getX(), node->getY() + node->getHeight() / 2 - sender->getY()))
+                        ->setPointOfEnd(PointF(event.x - sender->getX(), event.y - sender->getY()));
+
+                    sender->update();
                     return;
                 }
             }
@@ -161,27 +157,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 object->setY(object->getY() - shift.y);
             }
             //mainWindow->update();
-            //sender->invalidateRect(sender->getRect());
-            /*for (auto &object : graphArea->getChilds()) {
-                sender->invalidateRect(old.back());
-                old.pop_back();
-            }*/
-            //mainWindow->update();
-            /*
-            for (auto &object : pts) {
-                sender->invalidateRect(object);
-            }
-            for (auto &object : graphArea->getChilds()) {
-                sender->invalidateRect(object->getRect());
-            }*/
+
             
-            sender->invalidateRect(Rect(1, 1, sender->getWidth(), sender->getHeight()));
+            sender->update();
             
 
             prepos = Point(event.x, event.y);
         })
     );
-
+    
     mainWindow->add(
         (new Panel())
         ->setBackgroundColor(Color(100, 100, 100))
@@ -213,7 +197,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             mainWindow->update();
         })
     );
-
+    
     mainWindow->add((new Panel())
         ->setBackgroundColor(Color(100, 100, 100))
         ->setMargin(Margin(10, 200, 10, 40))
@@ -250,7 +234,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                         mainWindow->update();
                     })
     );
-
+    
     //dfs
     mainWindow->add((new Button())
                     ->setLabel(L"Запуск dfs")
@@ -263,19 +247,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ->setHeight(40)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
-        brrep = false;
-        mainWindow->ggblock = true;
-        HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
+        //brrep = false;
+        stateLine->setText(L"Поиск в глубину запущен...");
+        //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
         HANDLE threadr = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);
         
                         mainWindow->update();
                     })
     );
 
+    
+    
+
     mainWindow->pack();
     mainWindow->run();
     
     delete mainWindow;
+
+    
 
     return 0;
 }
@@ -290,14 +279,15 @@ DWORD WINAPI threaddfs(LPVOID t) {
 }
 
 
+/*
 DWORD WINAPI rep(LPVOID t) {
     while (true) {
-        mainWindow->wmRepaintAll();
+        mainWindow->update();
         if (brrep) {
-            mainWindow->ggblock = false;
+
             break;
         }
         Sleep(50);
     }
     return 0;
-}
+}*/
