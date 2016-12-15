@@ -54,7 +54,7 @@ registerMouseWheelMovedEvent
 
             static Gdiplus::Graphics *graphicsTmp = new Gdiplus::Graphics(hwndhhhg);
 
-            if (width == 0 || height == 0) {
+            if (width <= 0 || height <= 0) {
                 return;
             }
 

@@ -13,6 +13,10 @@ GraphArea *graphArea = new GraphArea();
 Label *stateLine;
 Window *mainWindow;
 
+OutTable *outtable = new OutTable();
+
+GraphNode *startingNode = null;
+
 using namespace MetaFrame;
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, 
                       _In_opt_ HINSTANCE hPrevInstance,
@@ -67,12 +71,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 ->setY(event.y - 15)
                 ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
                     if (event.shiftDown) {
+                        if (startingNode == (GraphNode*)sender) {
+                            startingNode = null;
+                        }
+
                         graphArea->eraseNode((GraphNode *)sender);
+
+
+
+                        stateLine->setText(L"На поле " + String(graphArea->getNodesCollection().size()) + L" вершин.");
+                        table->getTable() = graphArea->getAdjacencyMatrix();
+                        table->refrash();
+                        mainWindow->update();
+                    } else {
+                        startingNode = (GraphNode*)sender;
+                        stateLine->setText(L"Начальная вершина - " + startingNode->getLabel());
+                        mainWindow->update();
                     }
-                    stateLine->setText(L"На поле " + String(graphArea->getNodesCollection().size()) + L" вершин.");
-                    table->getTable() = graphArea->getAdjacencyMatrix();
-                    table->refrash();
-                    mainWindow->update();
                 })
             );
             stateLine->setText(L"На поле " + String(graphArea->getNodesCollection().size()) + L" вершин.");
@@ -218,7 +233,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     mainWindow->add((new Panel())
                     ->setBackgroundColor(Color(100, 100, 100))
-                    ->setMargin(Margin(10, 10, 10, 190))
+                    ->setMargin(Margin(10, 10, 10, 250))
                     ->setVerticalAlignment(VerticalAlignment::Stretch)
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoWidth(false)
@@ -228,11 +243,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                           ->setText(L"Вывод:")
                           ->setMargin(0, 0, 0, 0)
                     )
-                    /*->add(table
-                          ->setColomnsNumber(3)
+                    ->add(outtable
+                          ->setColomnsNumber(1)
                           ->setStringsNumber(3)
                           ->setMargin(5, 5, 20, 5)
-                    )*/
+                    )
     );
 
 
@@ -249,6 +264,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ->setHeight(40)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
+                        if (startingNode == null) {
+                            stateLine->setText(L"Выберите начальную вершину!");
+                            mainWindow->update();
+                            return;
+                        }
                         //brrep = false;
                         stateLine->setText(L"Поиск в ширину запущен...");
                         //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
@@ -268,6 +288,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ->setHeight(40)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
+                        if (startingNode == null) {
+                            stateLine->setText(L"Выберите начальную вершину!");
+                            mainWindow->update();
+                            return;
+                        }
                         //brrep = false;
                         stateLine->setText(L"Поиск в глубину запущен...");
                         //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
@@ -275,7 +300,46 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     })
     );
 
-    
+    //Cycle
+    mainWindow->add((new Button())
+                    ->setLabel(L"Эйлеров цикл")
+                    ->setBackgroundColor(Color(100, 100, 100))
+                    ->setMargin(Margin(10, 10, 10, 190))
+                    ->setVerticalAlignment(VerticalAlignment::Bottom)
+                    ->setHorizontalAlignment(HorizontalAlignment::Right)
+                    ->setAutoHeight(false)
+                    ->setAutoWidth(false)
+                    ->setHeight(40)
+                    ->setWidth(180)
+                    ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
+                        /*if (startingNode == null) {
+                            stateLine->setText(L"Выберите начальную вершину!");
+                            mainWindow->update();
+                            return;
+                        }
+                        //brrep = false;
+                        stateLine->setText(L"Поиск в глубину запущен...");
+                        //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
+                        HANDLE threadr = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);*/
+                    })
+    );
+
+    /*
+    //Cycle
+    mainWindow->add((new Button())
+                    ->setLabel(L"Эйлеров цикл")
+                    ->setBackgroundColor(Color(100, 100, 100))
+                    ->setMargin(Margin(10, 10, 10, 240))
+                    ->setVerticalAlignment(VerticalAlignment::Bottom)
+                    ->setHorizontalAlignment(HorizontalAlignment::Right)
+                    ->setAutoHeight(false)
+                    ->setAutoWidth(false)
+                    ->setHeight(40)
+                    ->setWidth(180)
+                    ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
+   
+                    })
+    );*/
     
 
     mainWindow->pack();
@@ -289,9 +353,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 }
 
 DWORD WINAPI threaddfs(LPVOID t) {
-    DfsClass d(graphArea->getGraph(), mainWindow);
-    d.dfs(graphArea->getSelect());
+    DfsClass d(graphArea->getGraph(), mainWindow, outtable, startingNode);
     stateLine->setText(L"Поиск в глубину выполнен!");
+    outtable->getTable()[0].push_back(L"Done!");
+    outtable->refrash();
     Sleep(400);
     mainWindow->update();
     return 0;
@@ -299,9 +364,10 @@ DWORD WINAPI threaddfs(LPVOID t) {
 
 
 DWORD WINAPI threadbfs(LPVOID t) {
-    BfsClass d(graphArea->getGraph(), mainWindow);
-    d.bfs(graphArea->getSelect());
+    BfsClass d(graphArea->getGraph(), mainWindow, outtable, startingNode);
     stateLine->setText(L"Поиск в ширину выполнен!");
+    outtable->getTable()[0].push_back(L"Done!");
+    outtable->refrash();
     Sleep(400);
     mainWindow->update();
     return 0;

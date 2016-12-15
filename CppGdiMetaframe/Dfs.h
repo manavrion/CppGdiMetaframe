@@ -9,20 +9,36 @@ typedef GraphLine* Line;
 
 class DfsClass {
 public:
-    DfsClass(map<GraphNode*, map<GraphNode*, set<GraphLine*>>> graph, Window *mainWindow) : mainWindow(mainWindow){
+    DfsClass(map<GraphNode*, map<GraphNode*, set<GraphLine*>>> graph, 
+             Window *mainWindow, 
+             OutTable *outtable,
+             Node start
+    ) 
+        : mainWindow(mainWindow), 
+        outtable(outtable)
+    {
         this->graph = graph;
         for (auto &ob : graph) { color[ob.first] = 0; }
+        outtable->getTable() = vector<vector<String>>();
+        outtable->refrash();
         updateScreen();
+
+        dfs(start);
+
     };
+    int num = 0;
+    OutTable *outtable;
     Window *mainWindow;
+    vector<String> out;
 
 
-    map<GraphNode*, map<GraphNode*, set<GraphLine*>>> graph; // граф
+
+    map<Node, map<Node, set<Line>>> graph; // граф
 
     map<Node, int> color; // цвет вершины (0, 1, или 2)
 
     void dfs(Node node) {
-
+        out.push_back(String(num++) + L" -> " + node->getLabel());
 
         color[node] = 1;
         updateScreen();
@@ -36,16 +52,11 @@ public:
     }
 
 
-    void updateScreen(Node node) {
-        Color color = node->getColor();
-        node->setColor(Color(0, 255, 255));
-        mainWindow->update();
-        Sleep(400);
-        node->setColor(color);
-    }
+
 
     void updateScreen() {
-
+        outtable->getTable() = vector<vector<String>>({out});
+        outtable->refrash();
         for (auto &ob : color) {
             switch (ob.second) {
                 case 0:

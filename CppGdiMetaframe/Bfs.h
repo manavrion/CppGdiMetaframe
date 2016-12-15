@@ -9,15 +9,28 @@ typedef GraphLine* Line;
 
 class BfsClass {
 public:
-    BfsClass(map<GraphNode*, map<GraphNode*, set<GraphLine*>>> graph, Window *mainWindow) : mainWindow(mainWindow) {
+    BfsClass(map<GraphNode*, map<GraphNode*, set<GraphLine*>>> graph, 
+             Window *mainWindow, 
+             OutTable *outtable,
+             Node start
+    )
+        : mainWindow(mainWindow), 
+        outtable(outtable)
+    {
         this->graph = graph;
         for (auto &ob : graph) { used[ob.first] = 0; }
+        outtable->getTable() = vector<vector<String>>();
+        outtable->refrash();
         updateScreen();
+        bfs(start);
     };
+    int num = 0;
+    OutTable *outtable;
     Window *mainWindow;
+    vector<String> out;
 
 
-    map<GraphNode*, map<GraphNode*, set<GraphLine*>>> graph; // граф
+    map<Node, map<Node, set<Line>>> graph; // граф
 
     map<Node, int> used; // цвет вершины (0, 1, или 2)
 
@@ -28,6 +41,7 @@ public:
         used[node] = 1;
         while (!q.empty()) {
             Node v = q.front();
+            out.push_back(String(num++) + L" -> " + v->getLabel());
             used[v] = 2;
             q.pop();
             updateScreen();
@@ -37,24 +51,15 @@ public:
                     used[u.first] = 1;
                     updateScreen();
                 }
-
-
             }
         }
         return;
     }
 
 
-    void updateScreen(Node node) {
-        Color color = node->getColor();
-        node->setColor(Color(0, 255, 255));
-        mainWindow->update();
-        Sleep(400);
-        node->setColor(color);
-    }
-
     void updateScreen() {
-
+        outtable->getTable() = vector<vector<String>>({ out });
+        outtable->refrash();
         for (auto &ob : used) {
             switch (ob.second) {
                 case 0:
