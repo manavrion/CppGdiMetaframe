@@ -22,6 +22,11 @@ public:
         outtable->getTable() = vector<vector<String>>();
         outtable->refrash();
         updateScreen();
+
+        for (auto &ob : graph) { graphSorted.push_back(ob.first); }
+
+        sort(graphSorted.begin(), graphSorted.end(), [](Node &a, Node &b) {return a->getLabel() < b->getLabel(); });
+
         bfs(start);
     };
     int num = 0;
@@ -29,6 +34,7 @@ public:
     Window *mainWindow;
     vector<String> out;
 
+    vector<Node> graphSorted; // sorted
 
     map<Node, map<Node, set<Line>>> graph; // граф
 
@@ -45,10 +51,10 @@ public:
             used[v] = 2;
             q.pop();
             updateScreen();
-            for (auto &u : graph[v]) {
-                if (used[u.first] == 0 && u.second.size() != 0) {
-                    q.push(u.first);
-                    used[u.first] = 1;
+            for (auto &u : graphSorted) {
+                if (used[u] == 0 && graph[u][node].size() != 0) {
+                    q.push(u);
+                    used[u] = 1;
                     updateScreen();
                 }
             }

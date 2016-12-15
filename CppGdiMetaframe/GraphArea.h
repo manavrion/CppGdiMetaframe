@@ -7,7 +7,9 @@ namespace MetaFrame {
     class GraphArea : public FrameElement {
     public:
 
-        GraphArea() {};
+        GraphArea() {
+            
+        };
 
         virtual std::set<GraphNode*> &getNodesCollection() {
             return nodes;

@@ -340,7 +340,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    
                     })
     );*/
-    
+
 
     mainWindow->pack();
     mainWindow->run();

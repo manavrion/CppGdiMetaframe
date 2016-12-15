@@ -23,6 +23,11 @@ public:
         outtable->refrash();
         updateScreen();
 
+
+        for (auto &ob : graph) { graphSorted.push_back(ob.first); }
+
+        sort(graphSorted.begin(), graphSorted.end(), [](Node &a, Node &b) {return a->getLabel() < b->getLabel(); });
+
         dfs(start);
 
     };
@@ -32,6 +37,7 @@ public:
     vector<String> out;
 
 
+    vector<Node> graphSorted; // sorted
 
     map<Node, map<Node, set<Line>>> graph; // граф
 
@@ -42,9 +48,9 @@ public:
 
         color[node] = 1;
         updateScreen();
-        for (auto &v : graph[node]) {
-            if (color[v.first] == 0 && v.second.size() != 0)
-                dfs(v.first);
+        for (auto &v : graphSorted) {
+            if (color[v] == 0 && graph[v][node].size() != 0)
+                dfs(v);
         }
         color[node] = 2;
         updateScreen();
