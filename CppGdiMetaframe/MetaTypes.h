@@ -38,6 +38,10 @@ namespace MetaFrame {
         byte getGreen() const;
         byte getBlue() const;
 
+        bool operator==(const Color &color) const {
+            return (red == color.red) && (green == color.green) && (blue == color.blue) && (alpha == color.alpha);
+        }
+
         //platform
         operator const Gdiplus::Color() const;
 

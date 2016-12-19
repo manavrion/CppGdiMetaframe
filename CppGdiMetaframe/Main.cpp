@@ -113,6 +113,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     }
                     line->setPointOfEnd(PointF(node->getX() + node->getWidth() / 2 - sender->getX(), node->getY() + node->getHeight() / 2 - sender->getY()));
                     graphArea->addLineComplite(line);
+                    line = null;
                     table->getTable() = graphArea->getAdjacencyMatrix();
                     table->refrash();
                     mainWindow->pack();

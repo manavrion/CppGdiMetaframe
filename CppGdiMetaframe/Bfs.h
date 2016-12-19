@@ -52,7 +52,7 @@ public:
             q.pop();
             updateScreen();
             for (auto &u : graphSorted) {
-                if (used[u] == 0 && graph[u][node].size() != 0) {
+                if (used[u] == 0 && graph[u][v].size() != 0) {
                     q.push(u);
                     used[u] = 1;
                     updateScreen();

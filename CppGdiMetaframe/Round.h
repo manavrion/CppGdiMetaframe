@@ -37,9 +37,21 @@ namespace MetaFrame {
     private:
         Color color = Color(120, 120, 120);
         virtual void repaintMyRect() {
+            
+
             mygraphics_newGraphSys->SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
             mygraphics_newGraphSys->FillEllipse(&Gdiplus::SolidBrush(Color(0, 0, 0)), Rect(0, 0, width - 1, height - 1));
             mygraphics_newGraphSys->FillEllipse(&Gdiplus::SolidBrush(color), Rect(1, 1, width -1  - 2, height- 1 - 2));
+
+            if (label != null) {
+                if (Color(50, 50, 50) == color) {
+                    label->setColor(Color(255, 255, 255));
+                } else {
+                    label->setColor(Color(0, 0, 0));
+                }
+            }
+            
+
             //graphics->fillEllipse(Rect(0, 0, width, height), Color(0, 0, 0));
             
             //graphics->fillEllipse(Rect(1, 1, width - 2, height - 2), color);
