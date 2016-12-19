@@ -72,8 +72,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
             
             graphArea->addNode((GraphNode *)(new GraphNode())
-                ->setWidth(30)
-                ->setHeight(30)
+                ->setWidth(40)
+                ->setHeight(40)
                 ->setX(event.x - 15)
                 ->setY(event.y - 15)
                 ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
@@ -212,7 +212,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         ->setHorizontalAlignment(HorizontalAlignment::Right)
         ->setAutoHeight(false)
         ->setAutoWidth(false)
-        ->setHeight(40)
+        ->setHeight(30)
         ->setWidth(180)
         ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
             graphArea->clear();
@@ -264,15 +264,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     //bfs
     mainWindow->add((new Button())
-                    ->setLabel(L"Çàïóñê bfs")
+                    ->setLabel(L"BFS")
                     ->setBackgroundColor(Color(100, 100, 100))
-                    ->setMargin(Margin(10, 10, 10, 90))
+                    ->setMargin(Margin(10, 10, 10, 80))
                     ->setVerticalAlignment(VerticalAlignment::Bottom)
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoHeight(false)
                     ->setAutoWidth(false)
                     ->setHeight(30)
-                    ->setWidth(180)
+                    ->setWidth(85)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
                         if (startingNode == null) {
                             stateLine->setText(L"Âûáåğèòå íà÷àëüíóş âåğøèíó!");
@@ -289,15 +289,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     
     //dfs
     mainWindow->add((new Button())
-                    ->setLabel(L"Çàïóñê dfs")
+                    ->setLabel(L"DFS")
                     ->setBackgroundColor(Color(100, 100, 100))
-                    ->setMargin(Margin(10, 10, 10, 130))
+                    ->setMargin(Margin(10, 105, 10, 80))
                     ->setVerticalAlignment(VerticalAlignment::Bottom)
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoHeight(false)
                     ->setAutoWidth(false)
                     ->setHeight(30)
-                    ->setWidth(180)
+                    ->setWidth(85)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
                         if (startingNode == null) {
                             stateLine->setText(L"Âûáåğèòå íà÷àëüíóş âåğøèíó!");
@@ -316,7 +316,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     mainWindow->add((new Button())
                     ->setLabel(L"İéëåğîâ öèêë")
                     ->setBackgroundColor(Color(100, 100, 100))
-                    ->setMargin(Margin(10, 10, 10, 170))
+                    ->setMargin(Margin(10, 10, 10, 120))
                     ->setVerticalAlignment(VerticalAlignment::Bottom)
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoHeight(false)
@@ -340,7 +340,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     mainWindow->add((new Button())
                     ->setLabel(L"Äåéêñòğà")
                     ->setBackgroundColor(Color(100, 100, 100))
-                    ->setMargin(Margin(10, 10, 10, 210))
+                    ->setMargin(Margin(10, 10, 10, 160))
                     ->setVerticalAlignment(VerticalAlignment::Bottom)
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoHeight(false)
@@ -363,7 +363,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     mainWindow->add((new Button())
                     ->setLabel(L"Ğãğ")
                     ->setBackgroundColor(Color(100, 100, 100))
-                    ->setMargin(Margin(10, 10, 10, 250))
+                    ->setMargin(Margin(10, 10, 10, 200))
                     ->setVerticalAlignment(VerticalAlignment::Bottom)
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoHeight(false)
@@ -383,7 +383,33 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     })
     );
 
+    mainWindow->add((new Button())
+                    ->setLabel(L"Ìàòğ. èíöèäåíòíîñòè")
+                    ->setBackgroundColor(Color(100, 100, 100))
+                    ->setMargin(Margin(10, 10, 10, 240))
+                    ->setVerticalAlignment(VerticalAlignment::Bottom)
+                    ->setHorizontalAlignment(HorizontalAlignment::Right)
+                    ->setAutoHeight(false)
+                    ->setAutoWidth(false)
+                    ->setHeight(30)
+                    ->setWidth(180)
+                    ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
+                        Window *matr = new Window(L"matrix", L"matrix", Size(400, 400), Color(60, 60, 60), hInstance);
+                        Table *tableAcidentaly = new Table();
 
+                        matr->add(tableAcidentaly->setColomnsNumber(3)
+                                  ->setStringsNumber(3)
+                                  ->setMargin(5, 5, 40, 5));
+
+                        tableAcidentaly->getTable() = graphArea->getAcidentalyMatrix();
+                        tableAcidentaly->refrash();
+
+                        
+
+                        matr->pack();
+                        matr->run();
+                    })
+    );
 
 
 

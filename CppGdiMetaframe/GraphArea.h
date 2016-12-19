@@ -46,23 +46,16 @@ namespace MetaFrame {
         virtual GraphArea *addNode(GraphNode* node) {
             add(node);
             nodes.insert(node);
-            String a(L"a");
+
+
+            int i = 1;
             while (true) {
-                if (names.count(a) == 1) {
-                    if (a.back() == L'z') {
-                        /*if (a[0] == L'z') {
-                            a.push_back(L'a');
-                            for (auto &ch : a) ch = L'a';
-                        }
-                        a.back() = L'a';
-                        a[0]++;*/
-                    } else {
-                        a.back()++;
-                    }
+                if (names.count(i) == 1) {
+                    i++;
                     continue;
                 }
-                names.insert(a);
-                node->setLabel(a);
+                names.insert(i);
+                node->setLabel(i);
                 break;
             }
             return this;
@@ -174,18 +167,25 @@ namespace MetaFrame {
             }
 
             int i = 1;
-            for (auto &node : nodes) {
+
+            
+            std::vector<GraphNode*> graphSorted; // sorted
+            for (auto &ob : nodes) { graphSorted.push_back(ob); }
+            //sort(graphSorted.begin(), graphSorted.end(), [](auto a, auto b) {return a->getLabel() < b->getLabel(); });
+            sort(graphSorted.begin(), graphSorted.end(), [](auto a, auto b) {return a->getLabel().toValueInt() < b->getLabel().toValueInt(); });
+            
+            for (auto &node : graphSorted) {
                 matrix[0][i] = node->getLabel();
                 matrix[i][0] = node->getLabel();
 
                 int j = 1;
-                for (auto &annode : nodes) {
+                for (auto &annode : graphSorted) {
                     if (graph[node][annode].size() >= 1) {
                         matrix[i][j] = graph[node][annode].size();
                         matrix[j][i] = graph[node][annode].size();
                     } else {
-                        matrix[i][j] =graph[node][annode].size();
-                        matrix[j][i] =graph[node][annode].size();
+                        matrix[i][j] = graph[node][annode].size();
+                        matrix[j][i] = graph[node][annode].size();
                     }
                     j++;
                 }
@@ -193,6 +193,61 @@ namespace MetaFrame {
             }
             return matrix;
         }
+
+
+        std::vector<std::vector<String>> getAcidentalyMatrix() {
+            
+
+            std::set<std::pair<GraphNode*, GraphNode*>> lines;
+            for (auto &key1 : graph) {
+                for (auto &key2 : key1.second) {
+                    if (key1.first == key2.first) {
+                        continue;
+                    }
+                    if (graph[key1.first][key2.first].size() != 0) {
+                        if (lines.count({ key1.first, key2.first }) == 0 && lines.count({ key2.first, key1.first }) == 0) {
+                            lines.insert({ key1.first, key2.first });
+                        }
+                    }
+                }
+            }
+
+            std::vector<GraphNode*> graphSorted; // sorted
+            for (auto &ob : nodes) { graphSorted.push_back(ob); }
+            //sort(graphSorted.begin(), graphSorted.end(), [](auto a, auto b) {return a->getLabel() < b->getLabel(); });
+            sort(graphSorted.begin(), graphSorted.end(), [](auto a, auto b) {return a->getLabel().toValueInt() < b->getLabel().toValueInt(); });
+
+
+
+            std::vector<std::vector<String>> matrix(lines.size() + 2, std::vector<String>(nodes.size() + 2));
+
+
+
+            int i = 1;
+            for (auto &line : lines) {
+                //matrix[i][0] = graphSorted[i - 1]->getLabel();
+                matrix[i][0] = line.first->getLabel() + L"-" + line.second->getLabel();
+
+                for (int j = 0; j < graphSorted.size(); j++) {
+                    matrix[0][j + 1] = graphSorted[j]->getLabel();
+                    if (line.first ==  graphSorted[j] || line.second == graphSorted[j]) {
+                        matrix[i][j + 1] = L"1";
+                    } else {
+                        matrix[i][j + 1] = L"0";
+                    }
+                }
+
+
+
+                i++;
+            }
+
+
+
+
+            return matrix;
+        }
+
 
 
         void clear() {

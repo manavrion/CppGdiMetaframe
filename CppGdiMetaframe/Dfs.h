@@ -18,7 +18,8 @@ public:
         outtable(outtable)
     {
         this->graph = graph;
-        for (auto &ob : graph) { color[ob.first] = 0; }
+        for (auto &ob : graph) { color[ob.first] = 0;  ob.first->setorder = -1;
+        }
         outtable->getTable() = vector<vector<String>>();
         outtable->refrash();
         updateScreen();
@@ -26,7 +27,8 @@ public:
 
         for (auto &ob : graph) { graphSorted.push_back(ob.first); }
 
-        sort(graphSorted.begin(), graphSorted.end(), [](Node &a, Node &b) {return a->getLabel() < b->getLabel(); });
+        //sort(graphSorted.begin(), graphSorted.end(), [](Node &a, Node &b) {return a->getLabel() < b->getLabel(); });
+        sort(graphSorted.begin(), graphSorted.end(), [](Node &a, Node &b) {return a->getLabel().toValueInt() < b->getLabel().toValueInt(); });
 
         dfs(start);
 
@@ -44,6 +46,7 @@ public:
     map<Node, int> color; // цвет вершины (0, 1, или 2)
 
     void dfs(Node node) {
+        node->setorder = num;
         out.push_back(String(num++) + L" -> " + node->getLabel());
 
         color[node] = 1;

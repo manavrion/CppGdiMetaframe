@@ -18,14 +18,15 @@ public:
         outtable(outtable)
     {
         this->graph = graph;
-        for (auto &ob : graph) { used[ob.first] = 0; }
+        for (auto &ob : graph) { used[ob.first] = 0; ob.first->setorder = -1; }
         outtable->getTable() = vector<vector<String>>();
         outtable->refrash();
         updateScreen();
 
         for (auto &ob : graph) { graphSorted.push_back(ob.first); }
 
-        sort(graphSorted.begin(), graphSorted.end(), [](Node &a, Node &b) {return a->getLabel() < b->getLabel(); });
+        //sort(graphSorted.begin(), graphSorted.end(), [](Node &a, Node &b) {return a->getLabel() < b->getLabel(); });
+        sort(graphSorted.begin(), graphSorted.end(), [](Node &a, Node &b) {return a->getLabel().toValueInt() < b->getLabel().toValueInt(); });
 
         bfs(start);
     };
@@ -47,7 +48,10 @@ public:
         used[node] = 1;
         while (!q.empty()) {
             Node v = q.front();
+
+            v->setorder = num;
             out.push_back(String(num++) + L" -> " + v->getLabel());
+
             used[v] = 2;
             q.pop();
             updateScreen();
