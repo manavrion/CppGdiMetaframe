@@ -16,21 +16,20 @@ namespace MetaFrame {
         //render
         //ход вниз
         void paintBackBuffer() {
-            //parent->mygraphics_newGraphSys->DrawImage(bitmap, getRect());
-            //parent->paintBackBuffer();
-            invalidateScreenRect();
+            return;
         };
 
         void hWindowBind(HWND hWindow) {
-            hwndhhhg = hWindow;
-            update();
+            hwndhhhg = hWindow; //привязка хендла
         }
 
-        //запуск обхода
-        void update() {
+        /*virtual void update() {
+            isvalid = true;
+            invalidateScreenRectEvent();
+        }*/
 
-            repaint();
-            paintBackBuffer();
+        virtual void invalidateScreenRectEvent() {
+            invalidateScreenRect();
         }
 
     protected:

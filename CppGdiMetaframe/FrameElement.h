@@ -47,6 +47,25 @@ registerMouseWheelMovedEvent
         Gdiplus::Bitmap *bitmap = nullptr;
         HWND hwndhhhg = nullptr;
 
+        bool isvalid = true;
+
+        virtual void recInv() {
+            isvalid = false;
+            for (auto &ob : childs) {
+                ob->recInv();
+            }
+        }
+
+        virtual void update() {
+            recInv();
+            invalidateScreenRectEvent();
+        }
+
+        virtual void invalidateScreenRectEvent() {
+            parent->invalidateScreenRectEvent();
+        }
+
+
         virtual void resizeBitMapEvent_newGraphSys() {
             if (hwndhhhg == null) {
                 return;
@@ -71,21 +90,39 @@ registerMouseWheelMovedEvent
 
 
 
-
         Gdiplus::Graphics *mygraphics_newGraphSys = nullptr;
 
+        virtual void checkforvalid() {
+            bool perfect = true;
+            for (size_t i = 0; i < childs.size(); i++) {
+                if (childs[i]->isvalid == false) {
+                    childs[i]->checkforvalid();
+                    perfect = false;
+                }
+            }
+
+            if (perfect == true && isvalid == true) {
+                return;
+            } else {
+                repaint();
+                return;
+            } 
+
+            /*for (size_t i = 0; i < childs.size(); i++) {
+                childs[i]->checkforvalid();
+            }
+            if (isvalid == false) {
+                repaint();
+                isvalid = true;
+                parent->paintBackBuffer();
+            }*/
+        }
 
         //ход вниз
         virtual void paintBackBuffer() {
             parent->mygraphics_newGraphSys->DrawImage(bitmap, getRect());
             parent->paintBackBuffer();
         };
-
-        //запуск обхода
-        virtual void update() {
-            repaint();
-            parent->paintBackBuffer();
-        }
 
     public:
         //ход вверх
@@ -104,7 +141,7 @@ registerMouseWheelMovedEvent
             }
             repaintMyRect();
             for (size_t i = 0; i < childs.size(); i++) {
-                childs[i]->repaint();
+                childs[i]->repaint();//rewrite!!11
             }
             
             parent->mygraphics_newGraphSys->DrawImage(bitmap, getRect());

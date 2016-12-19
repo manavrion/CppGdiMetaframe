@@ -97,7 +97,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             table->refrash();
 
 
-            mainWindow->update();
+            sender->update();
         })
         ->addMouseReleasedEvent([&](MouseEvent event, FrameElement *sender) { 
             innodedragMode = false; 

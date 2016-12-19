@@ -297,6 +297,7 @@ namespace MetaFrame {
         child->setParent(this);
         child->hwndhhhg = hwndhhhg;
         child->resizeBitMapEvent_newGraphSys();
+        //child->update();
         return this;
     }
 
@@ -305,6 +306,7 @@ namespace MetaFrame {
         child->setParent(this);
         child->hwndhhhg = hwndhhhg;
         child->resizeBitMapEvent_newGraphSys();
+        //child->update();
         return this;
     }
 

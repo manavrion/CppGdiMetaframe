@@ -11,7 +11,7 @@ namespace MetaFrame {
         this->setRect(getWindowRect());
         hwndhhhg = hWindow;
         resizeBitMapEvent_newGraphSys();
-        update();
+        //update();
     }
 
     bool block = false;
@@ -40,6 +40,9 @@ namespace MetaFrame {
     }
 
     void Window::wmPaintBackBufferEvent() {
+
+        checkforvalid();
+
         //graphics->paintBackBuffer(this->getRect()); //this->rect is wrong
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWindow, &ps);
@@ -112,7 +115,7 @@ namespace MetaFrame {
         oldSize = size;
         //graphics->fillBackground(Color(60, 60, 60));
         //invalidateRect((Rect)size);
-        update();
+        //update();
         
     }
 
