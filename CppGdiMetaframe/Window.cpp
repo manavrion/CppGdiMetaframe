@@ -41,11 +41,22 @@ namespace MetaFrame {
 
     void Window::wmPaintBackBufferEvent() {
 
+        int timeOfBeginingPaint = clock();
+
         checkforvalid();
 
         //graphics->paintBackBuffer(this->getRect()); //this->rect is wrong
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWindow, &ps);
+
+
+        //fps
+        //int tm = System.timeOfBeginingPaint;
+        mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(Color(0, 0, 80)), Rect(0, 0, 73, 40));
+        mygraphics_newGraphSys->DrawString(String(clock() - timeOfBeginingPaint) + String(L" ms  \n~") + String(1000 / (clock() - timeOfBeginingPaint + 1)) + String(L" fps"), -1, &Gdiplus::Font(L"Arial", 12), (Gdiplus::RectF)Rect(0, 0, 300, 50), &Gdiplus::StringFormat(), &Gdiplus::SolidBrush(Color(255, 255, 255)));
+
+
+
 
         //init HDC and graphics
         HBITMAP backBufferHBitmap;
