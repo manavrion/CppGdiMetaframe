@@ -89,7 +89,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                         stateLine->setText(L"На поле " + String(graphArea->getNodesCollection().size()) + L" вершин.");
                         tableAdjacency->getTable() = graphArea->getAdjacencyMatrix();
                         tableAdjacency->refrash();
-                        mainWindow->update();
+                        sender->update();
                         sender->getParent()->erase(sender);
                         delete sender;
                     } else {
@@ -125,7 +125,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     line = null;
                     tableAdjacency->getTable() = graphArea->getAdjacencyMatrix();
                     tableAdjacency->refrash();
-                    mainWindow->pack();
+                    //mainWindow->pack();
                     mainWindow->update();
                     return;
                 }
@@ -137,9 +137,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     break;
                 }
             }
-
-            mainWindow->pack();
-            mainWindow->update();
+            
+            //mainWindow->pack();
+            graphArea->update();
         })
         ->addMouseDraggedEvent([&](MouseEvent event, FrameElement *sender) {
 
@@ -243,7 +243,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     mainWindow->add((new Panel())
                     ->setBackgroundColor(Color(100, 100, 100))
-                    ->setMargin(Margin(10, 10, 10, 250))
+                    ->setMargin(Margin(10, 10, 10, 290))
                     ->setVerticalAlignment(VerticalAlignment::Stretch)
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoWidth(false)
@@ -271,7 +271,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoHeight(false)
                     ->setAutoWidth(false)
-                    ->setHeight(40)
+                    ->setHeight(30)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
                         if (startingNode == null) {
@@ -291,12 +291,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     mainWindow->add((new Button())
                     ->setLabel(L"Запуск dfs")
                     ->setBackgroundColor(Color(100, 100, 100))
-                    ->setMargin(Margin(10, 10, 10, 140))
+                    ->setMargin(Margin(10, 10, 10, 130))
                     ->setVerticalAlignment(VerticalAlignment::Bottom)
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoHeight(false)
                     ->setAutoWidth(false)
-                    ->setHeight(40)
+                    ->setHeight(30)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
                         if (startingNode == null) {
@@ -316,12 +316,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     mainWindow->add((new Button())
                     ->setLabel(L"Эйлеров цикл")
                     ->setBackgroundColor(Color(100, 100, 100))
-                    ->setMargin(Margin(10, 10, 10, 190))
+                    ->setMargin(Margin(10, 10, 10, 170))
                     ->setVerticalAlignment(VerticalAlignment::Bottom)
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoHeight(false)
                     ->setAutoWidth(false)
-                    ->setHeight(40)
+                    ->setHeight(30)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
                         /*if (startingNode == null) {
@@ -336,22 +336,55 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     })
     );
 
-    /*
-    //Cycle
+    
     mainWindow->add((new Button())
-                    ->setLabel(L"Эйлеров цикл")
+                    ->setLabel(L"Дейкстра")
                     ->setBackgroundColor(Color(100, 100, 100))
-                    ->setMargin(Margin(10, 10, 10, 240))
+                    ->setMargin(Margin(10, 10, 10, 210))
                     ->setVerticalAlignment(VerticalAlignment::Bottom)
                     ->setHorizontalAlignment(HorizontalAlignment::Right)
                     ->setAutoHeight(false)
                     ->setAutoWidth(false)
-                    ->setHeight(40)
+                    ->setHeight(30)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
-   
+                        /*if (startingNode == null) {
+                            stateLine->setText(L"Выберите начальную вершину!");
+                            mainWindow->update();
+                            return;
+                        }
+                        //brrep = false;
+                        stateLine->setText(L"Поиск в глубину запущен...");
+                        //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
+                        HANDLE threadr = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);*/
                     })
-    );*/
+    );
+
+    mainWindow->add((new Button())
+                    ->setLabel(L"Ргр")
+                    ->setBackgroundColor(Color(100, 100, 100))
+                    ->setMargin(Margin(10, 10, 10, 250))
+                    ->setVerticalAlignment(VerticalAlignment::Bottom)
+                    ->setHorizontalAlignment(HorizontalAlignment::Right)
+                    ->setAutoHeight(false)
+                    ->setAutoWidth(false)
+                    ->setHeight(30)
+                    ->setWidth(180)
+                    ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
+        /*if (startingNode == null) {
+        stateLine->setText(L"Выберите начальную вершину!");
+        mainWindow->update();
+        return;
+        }
+        //brrep = false;
+        stateLine->setText(L"Поиск в глубину запущен...");
+        //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
+        HANDLE threadr = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);*/
+    })
+    );
+
+
+
 
 
     mainWindow->pack();

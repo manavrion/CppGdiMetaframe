@@ -98,7 +98,10 @@ namespace MetaFrame {
                         key2.second.clear();
                     }
                 }
+                key1.second.erase(node);
             }
+            graph.erase(node);
+
 
 
             nodes.erase(node);
