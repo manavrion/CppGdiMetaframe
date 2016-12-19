@@ -147,7 +147,7 @@ namespace MetaFrame {
         //invalidateScreenRect();
     }
 
-    void Window::repaintMyRect(Graphics *graphics) {
+    void Window::repaint(Graphics *graphics) {
         graphics->fillRectangle(Rect(0, 0, width, height), Color(60, 60, 60));
         //graphics->fillBackground(Color(60, 60, 60));
     }*/

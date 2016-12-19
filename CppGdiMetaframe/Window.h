@@ -34,16 +34,16 @@ namespace MetaFrame {
 
     protected:
         //ход вверх
-        virtual void repaint() {
-            repaintMyRect();
+        virtual void recrepaint() {
+            repaint();
             for (size_t i = 0; i < childs.size(); i++) {
-                childs[i]->repaint();
+                childs[i]->recrepaint();
             }
             
             //parent->mygraphics_newGraphSys->DrawImage(bitmap, getRect());
         };
 
-        virtual void repaintMyRect() {
+        virtual void repaint() {
             mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(this->getBackgroundColor()), Rect(0, 0, width, height));
         };
 
@@ -58,7 +58,7 @@ namespace MetaFrame {
 
         //void invalidateRect(Rect invalidRect);
 
-        //void repaintMyRect(Graphics *graphics);
+        //void repaint(Graphics *graphics);
 
     private:
         Size oldSize;

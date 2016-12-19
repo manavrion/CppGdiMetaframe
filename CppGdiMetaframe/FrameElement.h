@@ -85,7 +85,7 @@ registerMouseWheelMovedEvent
 
             bitmap = new Gdiplus::Bitmap(width, height, graphicsTmp);
             mygraphics_newGraphSys = new Gdiplus::Graphics(bitmap);
-            repaint();
+            recrepaint();
         }
 
 
@@ -93,18 +93,12 @@ registerMouseWheelMovedEvent
         Gdiplus::Graphics *mygraphics_newGraphSys = nullptr;
 
         virtual void checkforvalid() {
-            bool perfect = true;
             for (size_t i = 0; i < childs.size(); i++) {
-                if (childs[i]->isvalid == false) {
-                    childs[i]->checkforvalid();
-                    perfect = false;
-                }
+                childs[i]->checkforvalid();
             }
 
-            if (perfect == true && isvalid == true) {
-                return;
-            } else {
-                repaint();
+            if (isvalid == false) {
+                recrepaint();
                 return;
             } 
 
@@ -126,7 +120,7 @@ registerMouseWheelMovedEvent
 
     public:
         //ход вверх
-        virtual void repaint() {
+        virtual void recrepaint() {
             if (width == 0 || height == 0) {
                 return;
             }
@@ -139,15 +133,15 @@ registerMouseWheelMovedEvent
             if (bitmap->GetWidth() != width || bitmap->GetHeight() != height) {
                 resizeBitMapEvent_newGraphSys();
             }
-            repaintMyRect();
+            repaint();
             for (size_t i = 0; i < childs.size(); i++) {
-                childs[i]->repaint();//rewrite!!11
+                childs[i]->recrepaint();//rewrite!!11
             }
             
             parent->mygraphics_newGraphSys->DrawImage(bitmap, getRect());
         };
 
-        virtual void repaintMyRect() = 0;
+        virtual void repaint() = 0;
 
         /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -173,7 +167,23 @@ registerMouseWheelMovedEvent
 
         Color backgroundColor;
 
+        ElementState state;
+        bool enabled = true;
+
     public:
+        virtual FrameElement *setEnabled(bool enabled) {
+            this->enabled = enabled;
+            if (enabled == true) {
+                state = ElementState::NORMAL;
+                update();
+            } else {
+                state = ElementState::DISABLED;
+                update();
+            }
+            return this;
+        }
+
+
         virtual FrameElement *setRect(Rect rect);
                      
         virtual FrameElement *setX(int x);
@@ -233,6 +243,15 @@ registerMouseWheelMovedEvent
         virtual void packEvent();
 
         virtual FrameElement *add(FrameElement *child);
+
+        virtual void erase(FrameElement *child) {
+            for (auto it = childs.begin(); it != childs.end(); it++) {
+                if (*it == child) {
+                    childs.erase(it);
+                    break;
+                }
+            }
+        }
 
         virtual FrameElement *addToBack(FrameElement *child);
 

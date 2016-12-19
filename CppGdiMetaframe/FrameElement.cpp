@@ -494,8 +494,11 @@ namespace MetaFrame {
     }
 
     void FrameElement::runMousePressedEvent(MouseEvent event) {
-        for (auto &f : mousePressedEvents) {
-            (f)(event, this);
+        if (enabled == false) {
+            return;
+        }
+        for (size_t i = 0; i < mousePressedEvents.size(); i++) {
+            (mousePressedEvents[i])(event, this);
         }
         for (size_t i = 0; i < childs.size(); i++) {
             if (childs[i]->getRect().contains(Point(event.x, event.y))) {
@@ -593,7 +596,7 @@ namespace MetaFrame {
 
         totalShifts = totalShifts + Point(x, y);
 
-        this->repaintMyRect(graphics);
+        this->repaint(graphics);
 
         for (auto &ob : childs) {
             

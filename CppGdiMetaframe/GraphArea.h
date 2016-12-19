@@ -71,6 +71,7 @@ namespace MetaFrame {
 
         virtual GraphArea *eraseNode(GraphNode* node) {
             names.erase(node->getLabel());
+            //delete node;
             
             for (auto it = childs.begin(); it != childs.end(); it++) {
                 if (*it == node) {
@@ -86,6 +87,8 @@ namespace MetaFrame {
                             for (auto it = childs.begin(); it != childs.end(); it++) {
                                 if (*it == line) {
                                     childs.erase(it);
+                                    line->getParent()->erase(line);
+                                    delete line;
                                     break;
                                 }
                             }
@@ -99,6 +102,7 @@ namespace MetaFrame {
 
 
             nodes.erase(node);
+
             return this;
         }
 
@@ -134,7 +138,7 @@ namespace MetaFrame {
 
         std::map<GraphNode*, std::map<GraphNode*, std::set<GraphLine*>>> graph;
         
-        virtual void repaintMyRect() {
+        virtual void repaint() {
             mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(this->getBackgroundColor()), Rect(0, 0, width, height));
             mygraphics_newGraphSys->DrawRectangle(&Gdiplus::Pen(Color(255, 255, 255)), Rect(0, 0, width - 1, height - 1));
             //graphics->fillRectangle(Rect(0, 0, width, height), this->getBackgroundColor());

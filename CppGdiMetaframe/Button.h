@@ -7,11 +7,34 @@ namespace MetaFrame {
     class Button : public FrameElement {
 
     public:
-        Button();
+        Button()
+            : FrameElement(), 
+            label(nullptr) 
+        {
+            state = ElementState::NORMAL;
+            registerMouseEnteredEvent;
+            registerMouseExitedEvent;
+            registerMousePressedEvent;
+            registerMouseReleasedEvent;
+        }
 
-        Button *setLabel(String text);
+        Button *setLabel(String text) {
+            if (label == nullptr) {
+                label = new Label();
+                this->add(label);
+                label->setColor(Color(0, 0, 0))
+                    ->setMargin(10, 10, 10, 10)
+                    ->setHorizontalAlignment(HorizontalAlignment::Center)
+                    ->setVerticalAlignment(VerticalAlignment::Center)
+                    ->setAutoHeight(false)
+                    ->setAutoWidth(false);
+            }
+            label->setText(text);
+            this->pack();
+            return this;
+        }
 
-        ElementState state;
+        
     protected:
 
         Color normal = Color(160, 160, 160);
@@ -23,16 +46,61 @@ namespace MetaFrame {
         Label *label;
 
 
-        void repaintMyRect();
+        void repaint() {
+            mygraphics_newGraphSys->Clear(Color(0, 0, 0, 0));
+            switch (state) {
+                case MetaFrame::ElementState::NORMAL:
+                    mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(normal), Rect(0, 0, width, height));
+                    break;
+                case MetaFrame::ElementState::SELECTED:
+                    mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(selected), Rect(0, 0, width, height));
+                    break;
+                case MetaFrame::ElementState::PRESSED:
+                    mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(pressed), Rect(0, 0, width, height));
+                    break;
+                case MetaFrame::ElementState::FOCUSED:
+                    mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(focused), Rect(0, 0, width, height));
+                    break;
+                case MetaFrame::ElementState::DISABLED:
+                    mygraphics_newGraphSys->FillRectangle(&Gdiplus::SolidBrush(disabled), Rect(0, 0, width, height));
+                    break;
+                default:
+                    break;
+            }
+        }
 
         //event
-        void mouseEntered(const MouseEvent &event, FrameElement *sender);
-        void mouseExited(const MouseEvent &event, FrameElement *sender);
-        void mousePressed(const MouseEvent &event, FrameElement *sender);
-        void mouseReleased(const MouseEvent &event, FrameElement *sender);
+        void mouseEntered(const MouseEvent &event, FrameElement *sender) {
+            if (enabled) {
+                state = ElementState::SELECTED;
+                update();
+            }
+        }
+        void mouseExited(const MouseEvent &event, FrameElement *sender) {
+            if (enabled) {
+                state = ElementState::NORMAL;
+                update();
+            }
+        }
+        void mousePressed(const MouseEvent &event, FrameElement *sender) {
+            if (enabled) {
+                state = ElementState::PRESSED;
+                update();
+            }
+        }
+        void mouseReleased(const MouseEvent &event, FrameElement *sender) {
+            if (enabled) {
+                state = ElementState::SELECTED;
+                update();
+            }
+        }
 
     public:
-        ~Button();
+        ~Button() {
+            if (label != null) {
+                delete label;
+            }
+        }
 
     };
 

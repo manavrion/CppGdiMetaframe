@@ -64,7 +64,7 @@ namespace MetaFrame {
         Color color;
         float lineWidth;
 
-        virtual void repaintMyRect() {
+        virtual void repaint() {
             mygraphics_newGraphSys->Clear(Color(0, 0, 0, 0));
             ///graphics->drawRectangle(Rect(0, 0, width, height), color);
             mygraphics_newGraphSys->SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);

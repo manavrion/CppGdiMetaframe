@@ -44,7 +44,7 @@ namespace MetaFrame {
 
 
     protected:
-        void repaintMyRect();
+        void repaint();
 
     public:
         ~Label();

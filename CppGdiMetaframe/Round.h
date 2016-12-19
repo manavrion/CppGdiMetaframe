@@ -36,7 +36,7 @@ namespace MetaFrame {
 
     private:
         Color color = Color(120, 120, 120);
-        virtual void repaintMyRect() {
+        virtual void repaint() {
             
 
             mygraphics_newGraphSys->SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);

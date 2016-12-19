@@ -41,6 +41,7 @@
 #include "InputCodes.h"
 #include "KeyEvent.h"
 #include "Graphics.h"
+#include "ThemeManager.h"
 #include "FrameElement.h"
 #include "SystemWindow.h"
 #include "Window.h"
@@ -52,5 +53,4 @@
 #include "OutTable.h"
 #include "Line.h"
 #include "GraphArea.h"
-#include "ThemeManager.h"
 #include "Button.h"

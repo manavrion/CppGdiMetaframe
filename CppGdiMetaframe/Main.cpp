@@ -17,6 +17,13 @@ OutTable *outtable = new OutTable();
 
 GraphNode *startingNode = null;
 
+void enabledAll(bool enabled) {
+    for (auto &ob : mainWindow->getChilds()) {
+        ob->setEnabled(enabled);
+    }
+}
+
+
 using namespace MetaFrame;
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, 
                       _In_opt_ HINSTANCE hPrevInstance,
@@ -47,7 +54,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     bool innodedragMode = false;
     GraphLine *line = null;
 
-    Table *table = new Table();
+    Table *tableAdjacency = new Table();
 
     
     mainWindow->add(graphArea
@@ -76,13 +83,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                         }
 
                         graphArea->eraseNode((GraphNode *)sender);
-
+                        
 
 
                         stateLine->setText(L"На поле " + String(graphArea->getNodesCollection().size()) + L" вершин.");
-                        table->getTable() = graphArea->getAdjacencyMatrix();
-                        table->refrash();
+                        tableAdjacency->getTable() = graphArea->getAdjacencyMatrix();
+                        tableAdjacency->refrash();
                         mainWindow->update();
+                        sender->getParent()->erase(sender);
+                        delete sender;
                     } else {
                         startingNode = (GraphNode*)sender;
                         stateLine->setText(L"Начальная вершина - " + startingNode->getLabel());
@@ -93,8 +102,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             stateLine->setText(L"На поле " + String(graphArea->getNodesCollection().size()) + L" вершин.");
 
 
-            table->getTable() = graphArea->getAdjacencyMatrix();
-            table->refrash();
+            tableAdjacency->getTable() = graphArea->getAdjacencyMatrix();
+            tableAdjacency->refrash();
 
 
             sender->update();
@@ -114,8 +123,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     line->setPointOfEnd(PointF(node->getX() + node->getWidth() / 2 - sender->getX(), node->getY() + node->getHeight() / 2 - sender->getY()));
                     graphArea->addLineComplite(line);
                     line = null;
-                    table->getTable() = graphArea->getAdjacencyMatrix();
-                    table->refrash();
+                    tableAdjacency->getTable() = graphArea->getAdjacencyMatrix();
+                    tableAdjacency->refrash();
                     mainWindow->pack();
                     mainWindow->update();
                     return;
@@ -208,8 +217,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
             graphArea->clear();
             stateLine->setText(L"На поле " + String(graphArea->getNodesCollection().size()) + L" вершин.");
-            table->getTable() = graphArea->getAdjacencyMatrix();
-            table->refrash();
+            tableAdjacency->getTable() = graphArea->getAdjacencyMatrix();
+            tableAdjacency->refrash();
             mainWindow->pack();
             mainWindow->update();
         })
@@ -225,7 +234,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
               ->setText(L"Матрица смежности:")
               ->setMargin(0, 0, 0, 0)
         )
-        ->add(table
+        ->add(tableAdjacency
               ->setColomnsNumber(3)
               ->setStringsNumber(3)
               ->setMargin(5, 5, 20, 5)
@@ -270,6 +279,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                             mainWindow->update();
                             return;
                         }
+                        enabledAll(false);
                         //brrep = false;
                         stateLine->setText(L"Поиск в ширину запущен...");
                         //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
@@ -294,6 +304,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                             mainWindow->update();
                             return;
                         }
+                        enabledAll(false);
                         //brrep = false;
                         stateLine->setText(L"Поиск в глубину запущен...");
                         //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
@@ -359,6 +370,7 @@ DWORD WINAPI threaddfs(LPVOID t) {
     outtable->getTable()[0].push_back(L"Done!");
     outtable->refrash();
     Sleep(400);
+    enabledAll(true);
     mainWindow->update();
     return 0;
 }
@@ -370,6 +382,7 @@ DWORD WINAPI threadbfs(LPVOID t) {
     outtable->getTable()[0].push_back(L"Done!");
     outtable->refrash();
     Sleep(400);
+    enabledAll(true);
     mainWindow->update();
     return 0;
 }
