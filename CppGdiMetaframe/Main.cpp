@@ -5,9 +5,10 @@
 #include "Main.h"
 #include "Dfs.h"
 #include "Bfs.h"
+#include "Rgr.h"
 DWORD WINAPI threaddfs(LPVOID t);
 DWORD WINAPI threadbfs(LPVOID t);
-//DWORD WINAPI rep(LPVOID t);
+DWORD WINAPI threadrgr(LPVOID t);
 
 GraphArea *graphArea = new GraphArea();
 Label *stateLine;
@@ -117,9 +118,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             }
             for (auto &node : graphArea->getNodesCollection()) {
                 if (node->getRect().contains( Point(line->getPointOfEnd()) + Point(sender->getX(), sender->getY()))) {
-                    if (node->getRect().contains(Point(line->getPointOfBegin()) + Point(sender->getX(), sender->getY()))) {
-                        continue;
-                    }
+
                     line->setPointOfEnd(PointF(node->getX() + node->getWidth() / 2 - sender->getX(), node->getY() + node->getHeight() / 2 - sender->getY()));
                     graphArea->addLineComplite(line);
                     line = null;
@@ -371,16 +370,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ->setHeight(30)
                     ->setWidth(180)
                     ->addMousePressedEvent([&](MouseEvent event, FrameElement *sender) {
-        /*if (startingNode == null) {
-        stateLine->setText(L"Выберите начальную вершину!");
-        mainWindow->update();
-        return;
-        }
-        //brrep = false;
-        stateLine->setText(L"Поиск в глубину запущен...");
-        //HANDLE thread = CreateThread(NULL, 0, rep, NULL, 0, NULL);
-        HANDLE threadr = CreateThread(NULL, 0, threaddfs, NULL, 0, NULL);*/
-    })
+                        if (startingNode == null) {
+                            stateLine->setText(L"Выберите начальную вершину!");
+                            mainWindow->update();
+                            return;
+                        }
+                        enabledAll(false);
+                        stateLine->setText(L"Поиск максимального подграфа запущен...");
+                        HANDLE threadr = CreateThread(NULL, 0, threadrgr, NULL, 0, NULL);
+                    })
     );
 
     mainWindow->add((new Button())
@@ -438,6 +436,18 @@ DWORD WINAPI threaddfs(LPVOID t) {
 DWORD WINAPI threadbfs(LPVOID t) {
     BfsClass d(graphArea->getGraph(), mainWindow, outtable, startingNode);
     stateLine->setText(L"Поиск в ширину выполнен!");
+    outtable->getTable()[0].push_back(L"Done!");
+    outtable->refrash();
+    Sleep(400);
+    enabledAll(true);
+    mainWindow->update();
+    return 0;
+}
+
+
+DWORD WINAPI threadrgr(LPVOID t) {
+    RgrClass d(graphArea->getGraph(), mainWindow, outtable, startingNode);
+    stateLine->setText(L"Поиск максимального подграфа выполнен!");
     outtable->getTable()[0].push_back(L"Done!");
     outtable->refrash();
     Sleep(400);

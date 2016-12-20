@@ -158,7 +158,7 @@ namespace MetaFrame {
             return null;
         }
 
-
+        //матрица смежности
         std::vector<std::vector<String>> getAdjacencyMatrix() {
             std::vector<std::vector<String>> matrix(nodes.size() + 1, std::vector<String>(nodes.size() + 1));
 
@@ -180,13 +180,8 @@ namespace MetaFrame {
 
                 int j = 1;
                 for (auto &annode : graphSorted) {
-                    if (graph[node][annode].size() >= 1) {
-                        matrix[i][j] = graph[node][annode].size();
-                        matrix[j][i] = graph[node][annode].size();
-                    } else {
-                        matrix[i][j] = graph[node][annode].size();
-                        matrix[j][i] = graph[node][annode].size();
-                    }
+                    matrix[i][j] = graph[node][annode].size();
+                    matrix[j][i] = graph[node][annode].size();
                     j++;
                 }
                 i++;
