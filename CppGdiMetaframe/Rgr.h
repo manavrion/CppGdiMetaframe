@@ -69,7 +69,7 @@ public:
         : mainWindow(mainWindow),
         outtable(outtable) {
         this->graph = graph;
-        for (auto &ob : graph) { used[ob.first] = 0; ob.first->setorder = -1; }
+        for (auto &ob : graph) { color[ob.first] = 0; ob.first->setorder = -1; }
         outtable->getTable() = vector<vector<String>>();
         outtable->refrash();
         updateScreen();
@@ -83,28 +83,28 @@ public:
 
         bool commonans = false;
         for (auto &click : unic) {
-            if (click.size() == unic.begin()->size() && click != ans) {
+            if (click.size() == unic.begin()->size()) {
                 String ans;
                 for (auto &node : click) {
                     ans += node->getLabel() + L" ";
                 }
                 if (!ans.empty()) {
                     if (commonans == false) {
-                        out.push_back(L"Доп. ответы:");
+                        out.push_back(L"result:");
                         commonans = true;
                     }
-                    out.push_back(ans);
+                    out.push_back(L"{"+ans + L"}");
                 }
             }
         }
-
+        out.push_back(L"total clicls: " + String(unic.size()));
 
 
         for (auto &ob : graph) { 
             if (ans.count(ob.first) != 0) {
-                used[ob.first] = 5;
+                color[ob.first] = 5;
             } else {
-                used[ob.first] = 0;
+                color[ob.first] = 0;
             }
         }
         updateScreen();
@@ -115,14 +115,11 @@ public:
     Window *mainWindow;
     vector<String> out;
 
-    vector<Node> graphSorted; // sorted
 
+    vector<Node> graphSorted; // sorted
     map<Node, map<Node, set<Line>>> graph; // граф
 
-    map<Node, int> used; // цвет вершины (0, 1, или 2)
-
-
-
+    map<Node, int> color; // цвет вершины (0, 1, или 2)
 
 
 
@@ -132,7 +129,7 @@ public:
 
     queue<const Click*> q;
 
-    //O(n^3 * logn)
+    //O((2^n)*n^2 * logn)
     Click rgr() {
 
         //O(n)
@@ -144,7 +141,7 @@ public:
             q.push(&(*(unic.find(c))));
         }
 
-        //O(n)
+        //O(2^n)
         while (!q.empty()) {
 
             const Click *nowClick = q.front();
@@ -202,9 +199,9 @@ public:
                 }
             }
 
-            if (nwsize != -1) {
+            /*if (nwsize != -1) {
                 unic.erase(*nowClick);
-            }
+            }*/
             
         }
 
@@ -216,21 +213,21 @@ public:
     void updateScreen(const Click &click, Node node) {
         for (auto &ob : graph) {
             if (click.count(ob.first) != 0) {
-                used[ob.first] = 5;
+                color[ob.first] = 5;
             } else {
-                used[ob.first] = 0;
+                color[ob.first] = 0;
             }
         }
-        used[node] = 1;
+        color[node] = 1;
         updateScreen();
     }
 
     void updateScreen(const Click &click) {
         for (auto &ob : graph) {
             if (click.count(ob.first) != 0) {
-                used[ob.first] = 5;
+                color[ob.first] = 5;
             } else {
-                used[ob.first] = 0;
+                color[ob.first] = 0;
             }
         }
         updateScreen();
@@ -238,7 +235,7 @@ public:
     void updateScreen() {
         outtable->getTable() = vector<vector<String>>({ out });
         outtable->refrash();
-        for (auto &ob : used) {
+        for (auto &ob : color) {
             switch (ob.second) {
                 case 0:
                     ob.first->setColor(Color(160, 160, 160));
